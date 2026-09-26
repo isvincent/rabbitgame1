@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>狡兔三窟：全球策略家｜大動畫強化版 V3.3</title>
+<title>狡兔三窟：全球策略家｜誇張音效強化版 V3.5</title>
 <style>
 :root{
   --bg:#f6f8fb;--card:#fff;--ink:#172033;--muted:#667085;--line:#d7e0ea;
@@ -95,6 +95,12 @@ button,input,textarea,select{font:inherit}button{cursor:pointer}
 @keyframes glowIn{to{opacity:1;transform:scale(1.2)}}
 @keyframes arrowFlow{from{transform:translateX(-4px)}to{transform:translateX(4px)}}
 @media(prefers-reduced-motion:reduce){.fire,.burn .bond,.smoke,.alertBox,.alertPulse,.rabbitRow span,.quoteReveal,.worldToSelf .arrow{animation:none!important;opacity:1!important;transform:none!important}}
+
+.soundToggleWrap{display:flex;align-items:center;gap:8px;justify-content:flex-end;margin-top:8px}
+.soundToggle{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px;font-weight:800;font-size:13px;display:inline-flex;align-items:center;gap:7px}
+.soundToggle.on{background:#edfdf8;border-color:#9ddbcf}
+.soundHint{font-size:12px;color:var(--muted)}
+
 @media(max-width:800px){.dashboardTop{grid-template-columns:repeat(2,1fr)}.detailGrid{grid-template-columns:1fr}}
 
 @media(max-width:800px){.topin,.hero,.grid2,.summaryGrid{grid-template-columns:1fr}.resources{grid-template-columns:repeat(5,1fr)}.grid3,.cardgrid,.issueGrid{grid-template-columns:1fr}.sliderRow{grid-template-columns:100px 1fr 55px}.barrow{grid-template-columns:100px 1fr 35px}}
@@ -105,8 +111,12 @@ button,input,textarea,select{font:inherit}button{cursor:pointer}
   <div class="topin">
     <div>
       <div class="brand">🐇 狡兔三窟：全球策略家</div>
-      <div class="sub">大動畫強化版 V3.3｜Google 試算表 × Apps Script</div>
+      <div class="sub">誇張音效強化版 V3.5｜Google 試算表 × Apps Script</div>
       <div class="progressrow"><div class="progress"><span id="progressBar"></span></div><div class="badge" id="stageBadge">首頁</div></div>
+      <div class="soundToggleWrap">
+        <button type="button" class="soundToggle on" id="soundToggleBtn">🔊 音效開啟</button>
+        <span class="soundHint">可隨時切換</span>
+      </div>
     </div>
     <div class="resources">
       <div class="res">💰<b id="money">80</b><small>財富</small></div>
@@ -140,7 +150,8 @@ const state = {
   money:80,people:20,rep:70,rel:30,root:10,
   answers:{},
   scores:{long:0,empathy:0,culture:0,negotiate:0,global:0,action:0},
-  submitted:false
+  submitted:false,
+  sound:true
 };
 
 const teacherState = {
@@ -157,6 +168,7 @@ function sync(){
   ['money','people','rep','rel','root'].forEach(k=>document.getElementById(k).textContent=Math.round(state[k]));
   document.getElementById('progressBar').style.width=`${Math.min(100,state.stage/(stages.length-1)*100)}%`;
   document.getElementById('stageBadge').textContent=stages[state.stage]||'完成';
+  syncSoundButton();
 }
 function delta(d){Object.entries(d).forEach(([k,v])=>state[k]=clamp(state[k]+v));sync()}
 function score(d){Object.entries(d).forEach(([k,v])=>state.scores[k]+=v)}
@@ -169,6 +181,122 @@ function uuid(){
 }
 function isConfigured(){return GAS_WEB_APP_URL && !GAS_WEB_APP_URL.includes('XXXXXXX')}
 
+function getAudioContext(){
+  if(!window.__gameAudioCtx){
+    const A=window.AudioContext||window.webkitAudioContext;
+    if(!A) return null;
+    window.__gameAudioCtx=new A();
+  }
+  if(window.__gameAudioCtx.state==='suspended'){
+    window.__gameAudioCtx.resume().catch(()=>{});
+  }
+  return window.__gameAudioCtx;
+}
+function tone(freq=440,dur=.08,type='sine',gain=.075,delay=0){
+  if(!state.sound) return;
+  const ctx=getAudioContext(); if(!ctx) return;
+  const o=ctx.createOscillator(),g=ctx.createGain();
+  o.type=type;o.frequency.value=freq;o.connect(g);g.connect(ctx.destination);
+  const t=ctx.currentTime+delay;
+  g.gain.setValueAtTime(.0001,t);
+  g.gain.exponentialRampToValueAtTime(gain,t+.01);
+  g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+  o.start(t);o.stop(t+dur+.02);
+}
+function chord(notes,dur=.22,type='sine',gain=.055){
+  notes.forEach((f,i)=>tone(f,dur,type,gain,i*.015));
+}
+function sfx(name){
+  if(!state.sound) return;
+  switch(name){
+    case 'click':
+      tone(720,.07,'triangle',.04);
+      break;
+
+    case 'select':
+      tone(540,.08,'triangle',.05);
+      tone(760,.11,'triangle',.045,.05);
+      break;
+
+    case 'confirm':
+      tone(480,.08,'sine',.055);
+      tone(640,.10,'sine',.055,.06);
+      tone(840,.12,'sine',.06,.13);
+      tone(1080,.18,'sine',.055,.22);
+      break;
+
+    case 'warning':
+      tone(980,.20,'sawtooth',.085);
+      tone(700,.20,'sawtooth',.085,.18);
+      tone(980,.20,'sawtooth',.085,.36);
+      tone(520,.38,'square',.045,.55);
+      break;
+
+    case 'fire':
+      tone(120,.70,'sawtooth',.055);
+      tone(165,.55,'triangle',.05,.08);
+      tone(230,.38,'sawtooth',.045,.20);
+      tone(95,.85,'square',.035,.30);
+      tone(320,.22,'triangle',.035,.55);
+      break;
+
+    case 'success':
+      chord([523.25,659.25,783.99],.34,'sine',.05);
+      tone(1046.5,.22,'sine',.06,.20);
+      tone(1318.5,.28,'sine',.055,.36);
+      break;
+
+    case 'rabbit':
+      tone(360,.09,'triangle',.045);
+      tone(520,.10,'triangle',.05,.16);
+      tone(700,.11,'triangle',.055,.32);
+      tone(880,.12,'triangle',.06,.50);
+      chord([523.25,659.25,783.99,1046.5],.38,'sine',.05);
+      tone(1318.5,.26,'sine',.055,.72);
+      break;
+
+    case 'boss':
+      tone(130,.18,'square',.055);
+      tone(164.81,.18,'square',.055,.13);
+      tone(196,.18,'square',.06,.26);
+      tone(246.94,.22,'square',.06,.39);
+      chord([392,493.88,587.33],.38,'triangle',.05);
+      tone(783.99,.30,'sine',.06,.58);
+      break;
+
+    case 'youth':
+      tone(330,.12,'sine',.04);
+      tone(440,.12,'sine',.045,.10);
+      tone(523.25,.12,'sine',.05,.20);
+      tone(659.25,.14,'sine',.055,.30);
+      tone(783.99,.26,'sine',.06,.42);
+      break;
+
+    case 'submit':
+      tone(440,.10,'sine',.045);
+      tone(554.37,.10,'sine',.05,.08);
+      tone(659.25,.10,'sine',.055,.16);
+      tone(880,.16,'sine',.06,.26);
+      chord([523.25,659.25,783.99,1046.5],.34,'sine',.05);
+      tone(1567.98,.26,'sine',.05,.64);
+      break;
+  }
+}
+function syncSoundButton(){
+  const b=document.getElementById('soundToggleBtn');
+  if(!b) return;
+  b.classList.toggle('on',state.sound);
+  b.textContent=state.sound?'🔊 音效開啟':'🔇 音效關閉';
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest && e.target.closest('#soundToggleBtn');
+  if(!b) return;
+  state.sound=!state.sound;
+  syncSoundButton();
+  if(state.sound) sfx('confirm');
+});
+
+
 function home(){
   screen.innerHTML=`
   <div class="hero">
@@ -180,12 +308,12 @@ function home(){
         <button class="btn primary" id="studentBtn">學生開始遊戲</button>
         <button class="btn secondary teacherLock" id="teacherBtn">🔐 教師登入</button>
       </div>
-      <div class="callout"><b>V3.1 教師控管：</b>教師密碼不放在 HTML。Apps Script 驗證成功後才發出短效 Session Token，未通過驗證者不能讀取學生資料。</div>
+      <div class="callout"><b>互動音效：</b>一般選擇、答題確認、三段大型動畫、Boss 關、青春三窟與雲端提交都有不同提示音；V3.5 已提高整體音量並加強事件音效層次。右上角可隨時關閉音效。<br><br><b>教師控管：</b>教師密碼不放在 HTML。Apps Script 驗證成功後才發出短效 Session Token，未通過驗證者不能讀取學生資料。</div>
     </div>
     <div class="bigicon">🐇📱🔐</div>
   </div>`;
-  document.getElementById('studentBtn').onclick=()=>{state.mode='student';next()};
-  document.getElementById('teacherBtn').onclick=teacherLogin;
+  document.getElementById('studentBtn').onclick=()=>{sfx('click');state.mode='student';next()};
+  document.getElementById('teacherBtn').onclick=()=>{sfx('click');teacherLogin()};
 }
 function identity(){
   screen.innerHTML=`
@@ -203,7 +331,7 @@ function identity(){
     const seat=document.getElementById('seat').value.trim();
     const n=document.getElementById('name').value.trim();
     if(!c||!seat||!n){alert('請完整填寫班級、座號與姓名。');return}
-    state.student={className:c,seat:seat,name:n};next();
+    state.student={className:c,seat:seat,name:n};sfx('confirm');next();
   };
 }
 
@@ -216,7 +344,7 @@ function intro(){
   <div class="cardgrid">${opts.map(x=>`<button class="card pick" data-v="${x}"><strong>${x}</strong><span>先記住這個判斷，後面再回來檢查。</span></button>`).join('')}</div>
   <div id="fb" class="hidden"></div>`;
   document.querySelectorAll('.pick').forEach(b=>b.onclick=()=>{
-    state.answers.firstImpression=b.dataset.v;
+    sfx('select');state.answers.firstImpression=b.dataset.v;
     document.querySelectorAll('.pick').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');
     const fb=document.getElementById('fb');fb.classList.remove('hidden');
     fb.innerHTML=`<div class="feedback">你目前的判斷是：<b>${esc(b.dataset.v)}</b>。<div class="btnrow"><button class="btn primary" id="go">進入第一窟</button></div></div>`;
@@ -228,7 +356,7 @@ function cave1(){
   const opts=[['A','全數收回','維持現金與秩序，但百姓壓力最大。'],['B','減免部分','在收入與民心之間折衷。'],['C','焚燒債券','犧牲眼前利益，換取信任。'],['D','延後收取','先保留債權，等待未來處理。']];
   screen.innerHTML=`<div class="kicker">MISSION 1｜第一窟：市義於薛</div><h2 class="sectionTitle">薛地討債</h2><p class="lead">孟嘗君派馮諼前往薛地收債。百姓生活困苦，你會怎麼做？</p><div class="cardgrid">${opts.map(([k,t,d])=>`<button class="card pick" data-v="${k}"><strong>${k}｜${t}</strong><span>${d}</span></button>`).join('')}</div><div id="fb" class="hidden"></div>`;
   const outcome={A:{d:{money:25,people:-30,rep:5},txt:'收入增加，但薛地民怨升高。',s:{long:0,empathy:0}},B:{d:{money:8,people:15,rel:5},txt:'保住部分收入，也減輕百姓負擔。',s:{long:2,empathy:2}},C:{d:{money:-35,people:55,rel:15},txt:'財富下降，但薛地信任大幅提升。',s:{long:5,empathy:4}},D:{d:{money:0,people:5},txt:'暫時避免衝突，但問題仍未解決。',s:{long:1,empathy:1}}};
-  document.querySelectorAll('.pick').forEach(b=>b.onclick=()=>{if(state.answers.cave1)return;const v=b.dataset.v,o=outcome[v];state.answers.cave1=v;delta(o.d);score(o.s);b.classList.add('selected');const fb=document.getElementById('fb');fb.classList.remove('hidden');
+  document.querySelectorAll('.pick').forEach(b=>b.onclick=()=>{if(state.answers.cave1)return;const v=b.dataset.v,o=outcome[v];state.answers.cave1=v;delta(o.d);score(o.s);b.classList.add('selected');sfx(v==='C'?'fire':'select');const fb=document.getElementById('fb');fb.classList.remove('hidden');
     const result=`<div class="feedback"><b>即時結果：</b>${o.txt}<div class="delta">${Object.entries(o.d).map(([k,x])=>`<span class="pill ${x>=0?'good':'bad'}">${{money:'💰',people:'❤️',rep:'👑',rel:'🤝',root:'🏛️'}[k]} ${x>0?'+':''}${x}</span>`).join('')}</div><p>真正影響可能稍後才會出現。</p><div class="btnrow"><button class="btn primary" id="go">繼續</button></div></div>`;
     fb.innerHTML=v==='C'?`<div class="animStage burn" aria-live="polite"><div class="animCenter"><div class="animTitle">🔥 債券焚燒</div><div class="bondPile"><div class="bond"></div><div class="bond"></div><div class="bond"></div><div class="bond"></div></div><div class="fire">🔥</div><div class="animSub">焚券市義：眼前財富化為灰燼，未來民心正在累積……</div></div><div class="smoke" style="left:33%;bottom:70px">💨</div><div class="smoke" style="left:48%;bottom:78px;animation-delay:.35s">💨</div><div class="smoke" style="left:62%;bottom:65px;animation-delay:.7s">💨</div></div>${result}`:result;if(v==='C') revealNextButton('go',2300); else setNext('go');});
 }
@@ -246,7 +374,7 @@ function cave2(){
   <div id="fb" class="hidden"></div>`;
   document.querySelectorAll('.pick').forEach(b=>b.onclick=()=>{
     if(state.answers.cave2)return;
-    const v=b.dataset.v;state.answers.cave2=v;b.classList.add('selected');
+    const v=b.dataset.v;state.answers.cave2=v;b.classList.add('selected');sfx(v==='齊王'?'success':'select');
     const ok=v==='齊王';if(ok){delta({rep:15,rel:10});score({long:4,negotiate:5,empathy:3})}else{delta({rep:-5,rel:2});score({negotiate:1,empathy:1})}
     const fb=document.getElementById('fb');fb.classList.remove('hidden');
     fb.innerHTML=`<div class="feedback">${ok?'<b>推理成功。</b>':'<b>這個角色也受到影響，但並非核心目標。</b>'}<div class="callout">馮諼藉梁國的重視，讓齊王重新意識到孟嘗君的價值。</div><div class="btnrow"><button class="btn primary" id="go">進入第三窟</button></div></div>`;
@@ -257,7 +385,7 @@ function cave2(){
 function cave3(){
   screen.innerHTML=`<div class="kicker">MISSION 3｜第三窟：立宗廟於薛</div><h2 class="sectionTitle">100 枚策略幣：十年布局</h2><p class="lead">請配置 100 枚策略幣，在短期力量與長期根基之間做取捨。</p>${[['gold','🪙 黃金'],['army','⚔️ 軍隊'],['house','🏠 豪宅'],['temple','🏛️ 宗廟'],['welfare','❤️ 民生'],['diplomacy','🤝 外交']].map(([k,n])=>`<div class="sliderRow"><label>${n}</label><input type="range" min="0" max="100" value="0" data-k="${k}"><output>0</output></div>`).join('')}<div class="callout">已分配：<b id="used">0</b> / 100</div><div class="btnrow"><button class="btn primary" id="submit" disabled>確認配置</button></div><div id="fb"></div>`;
   const rs=[...document.querySelectorAll('input[type=range]')],used=document.getElementById('used'),btn=document.getElementById('submit');function syncAlloc(changed){let sum=rs.reduce((s,r)=>s+Number(r.value),0);if(sum>100){changed.value=Math.max(0,Number(changed.value)-(sum-100));sum=100}rs.forEach(r=>r.nextElementSibling.value=r.value);used.textContent=sum;btn.disabled=sum!==100}rs.forEach(r=>r.addEventListener('input',()=>syncAlloc(r)));
-  btn.onclick=()=>{const a={};rs.forEach(r=>a[r.dataset.k]=Number(r.value));state.answers.allocation=a;const longVal=a.temple+a.welfare+a.diplomacy;delta({root:Math.round(a.temple*.35+a.welfare*.15),rep:Math.round(a.army*.08+a.diplomacy*.12),rel:Math.round(a.diplomacy*.12+a.welfare*.08)});score({long:Math.round(longVal/15),empathy:Math.round(a.welfare/25),negotiate:Math.round(a.diplomacy/25)});document.getElementById('fb').innerHTML=`<div class="animStage rabbitScene" aria-live="polite"><div class="caveGlow g1"></div><div class="caveGlow g2"></div><div class="caveGlow g3"></div><div class="animCenter"><div class="rabbitRow"><span>🐇</span><span>🐇</span><span>🐇</span></div><div class="quoteReveal">三窟已就，君姑高枕為樂矣。</div><div class="animSub" style="margin-top:18px">第一窟：民心　｜　第二窟：政治價值　｜　第三窟：長期根基</div></div></div><div class="feedback">你的長期投資（宗廟＋民生＋外交）為 <b>${longVal}</b>。<div class="callout">第三窟的重點，是讓支持與位置制度化、長期化。</div><div class="btnrow"><button class="btn primary" id="go">走向世界</button></div></div>`;revealNextButton('go',2400);};
+  btn.onclick=()=>{const a={};rs.forEach(r=>a[r.dataset.k]=Number(r.value));state.answers.allocation=a;const longVal=a.temple+a.welfare+a.diplomacy;delta({root:Math.round(a.temple*.35+a.welfare*.15),rep:Math.round(a.army*.08+a.diplomacy*.12),rel:Math.round(a.diplomacy*.12+a.welfare*.08)});score({long:Math.round(longVal/15),empathy:Math.round(a.welfare/25),negotiate:Math.round(a.diplomacy/25)});sfx('rabbit');document.getElementById('fb').innerHTML=`<div class="animStage rabbitScene" aria-live="polite"><div class="caveGlow g1"></div><div class="caveGlow g2"></div><div class="caveGlow g3"></div><div class="animCenter"><div class="rabbitRow"><span>🐇</span><span>🐇</span><span>🐇</span></div><div class="quoteReveal">三窟已就，君姑高枕為樂矣。</div><div class="animSub" style="margin-top:18px">第一窟：民心　｜　第二窟：政治價值　｜　第三窟：長期根基</div></div></div><div class="feedback">你的長期投資（宗廟＋民生＋外交）為 <b>${longVal}</b>。<div class="callout">第三窟的重點，是讓支持與位置制度化、長期化。</div><div class="btnrow"><button class="btn primary" id="go">走向世界</button></div></div>`;revealNextButton('go',2400);};
 }
 function culture(){
   const opts=['判斷誰對誰錯','先理解表達習慣','兩邊都不要說','文化決定一切'];
@@ -267,7 +395,7 @@ function culture(){
   <p class="lead">A 同學習慣直接表達不同意見；B 同學偏好先維持關係，再委婉表達。你會怎麼處理？</p>
   <div class="cardgrid">${opts.map(x=>`<button class="card pick" data-v="${x}"><strong>${x}</strong></button>`).join('')}</div><div id="fb"></div>`;
   document.querySelectorAll('.pick').forEach(b=>b.onclick=()=>{
-    if(state.answers.culture)return;const v=b.dataset.v;state.answers.culture=v;b.classList.add('selected');
+    if(state.answers.culture)return;const v=b.dataset.v;state.answers.culture=v;b.classList.add('selected');sfx(v==='先理解表達習慣'?'success':'select');
     if(v==='先理解表達習慣'){delta({rel:12,people:5});score({culture:5,empathy:5})}else{delta({rel:-4});score({culture:1,empathy:1})}
     document.getElementById('fb').innerHTML=`<div class="feedback"><div class="callout">理解差異，不等於同意所有差異；而是先理解，再判斷。文化可以提供線索，但不能把個人簡化成刻板印象。</div><div class="btnrow"><button class="btn primary" id="go">進入全球談判</button></div></div>`;setNext('go');
   });
@@ -295,7 +423,7 @@ function negotiation(){
   document.getElementById('submit').onclick=()=>{
     const v=['p1','p2','p3','p4'].map(id=>document.getElementById(id).value.trim());
     if(v.some(x=>x.length<4)){alert('請完整填寫四句談判內容。');return}
-    [state.answers.position,state.answers.needs,state.answers.commonGround,state.answers.solution]=v;
+    [state.answers.position,state.answers.needs,state.answers.commonGround,state.answers.solution]=v;sfx('confirm');
     delta({rel:15,rep:8});score({negotiate:5,empathy:4,global:4});next();
   };
 }
@@ -310,8 +438,8 @@ function boss(){
   <div class="callout">已選：<b id="count">0</b> / 3</div>
   <label>選擇理由<textarea id="reason" placeholder="請用一句完整的話說明。"></textarea></label>
   <div class="btnrow"><button class="btn primary" id="submit" disabled>完成 Boss 關</button></div>`;
-  const set=new Set();document.querySelectorAll('.issue').forEach(b=>b.onclick=()=>{const v=b.dataset.v;if(set.has(v)){set.delete(v);b.classList.remove('active')}else if(set.size<3){set.add(v);b.classList.add('active')}document.getElementById('count').textContent=set.size;document.getElementById('submit').disabled=set.size!==3});
-  document.getElementById('submit').onclick=()=>{const r=document.getElementById('reason').value.trim();if(r.length<8){alert('請至少寫一句完整理由。');return}state.answers.boss=[...set];state.answers.bossReason=r;delta({root:10,rel:8});score({global:6,long:3,empathy:3});next()};
+  const set=new Set();document.querySelectorAll('.issue').forEach(b=>b.onclick=()=>{sfx('click');const v=b.dataset.v;if(set.has(v)){set.delete(v);b.classList.remove('active')}else if(set.size<3){set.add(v);b.classList.add('active')}document.getElementById('count').textContent=set.size;document.getElementById('submit').disabled=set.size!==3});
+  document.getElementById('submit').onclick=()=>{const r=document.getElementById('reason').value.trim();if(r.length<8){alert('請至少寫一句完整理由。');return}state.answers.boss=[...set];state.answers.bossReason=r;delta({root:10,rel:8});score({global:6,long:3,empathy:3});sfx('boss');next()};
 }
 
 function youthCaves(){
@@ -328,7 +456,7 @@ function action(){
   <p class="lead">「為了讓自己與世界變得更好，未來一個月，我願意……」</p>
   <textarea id="actionText" placeholder="例如：遇到不同意見時先理解理由；主動了解一項全球議題；查證 AI 產生的國際資訊。"></textarea>
   <div class="btnrow"><button class="btn primary" id="submit">完成行動承諾</button></div>`;
-  document.getElementById('submit').onclick=()=>{const v=document.getElementById('actionText').value.trim();if(v.length<8){alert('請寫下一項具體可執行的行動。');return}state.answers.action=v;score({action:6});delta({root:5});next()};
+  document.getElementById('submit').onclick=()=>{const v=document.getElementById('actionText').value.trim();if(v.length<8){alert('請寫下一項具體可執行的行動。');return}state.answers.action=v;score({action:6});delta({root:5});sfx('confirm');next()};
 }
 
 function submitPage(){
@@ -406,11 +534,11 @@ async function submitToCloud(){
     if(!res.ok) throw new Error('HTTP '+res.status);
     const data=await res.json();
     if(!data.ok) throw new Error(data.message||'Apps Script 回傳失敗');
-    state.submitted=true;
+    state.submitted=true;sfx('submit');
     status.className='status ok';status.innerHTML=`✅ 提交成功！<br>伺服器時間：${esc(data.timestamp||'')}<br>資料列：${esc(data.row||'')}`;
     btn.textContent='已提交';btn.disabled=true;
   }catch(err){
-    status.className='status err';status.innerHTML=`❌ 提交失敗：${esc(err.message)}<br><span class="small">請確認 Web App URL、部署權限與網路連線。</span>`;
+    sfx('warning');status.className='status err';status.innerHTML=`❌ 提交失敗：${esc(err.message)}<br><span class="small">請確認 Web App URL、部署權限與網路連線。</span>`;
     btn.textContent='重新提交';btn.disabled=false;
   }
 }
@@ -460,11 +588,11 @@ function teacherLogin(){
       });
       const data=await res.json();
       if(!res.ok || !data.ok || !data.token) throw new Error(data.message||'驗證失敗');
-      teacherState.token=data.token;
+      teacherState.token=data.token;sfx('success');
       status.className='status ok';status.textContent='✅ 教師驗證成功。';
       teacherDashboard();
     }catch(err){
-      status.className='status err';status.textContent='❌ '+err.message;
+      sfx('warning');status.className='status err';status.textContent='❌ '+err.message;
       btn.disabled=false;btn.textContent='登入教師端';
     }
   };
