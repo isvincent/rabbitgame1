@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>狡兔三窟：全球策略家｜教師即時儀表板版 V3.1</title>
+<style>
+:root{
+  --bg:#f6f8fb;--card:#fff;--ink:#172033;--muted:#667085;--line:#d7e0ea;
+  --accent:#5b6ee1;--accent2:#159a80;--good:#16794f;--bad:#b83232;--soft:#f3f6ff;
+  --shadow:0 12px 30px rgba(22,32,51,.09)
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Microsoft JhengHei","Noto Sans TC",system-ui,-apple-system,sans-serif;background:linear-gradient(180deg,#fafcff,#eef3f8);color:var(--ink)}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
+.wrap{max-width:1180px;margin:auto;padding:16px}
+.top{position:sticky;top:0;z-index:10;background:rgba(250,252,255,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.topin{max-width:1180px;margin:auto;padding:11px 16px;display:grid;grid-template-columns:1fr 1.35fr;gap:12px;align-items:center}
+.brand{font-weight:900;font-size:clamp(21px,3.4vw,31px)}.sub{color:var(--muted);font-size:13px}
+.resources{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.res{background:#fff;border:1px solid var(--line);border-radius:13px;padding:7px;text-align:center}.res b{display:block;font-size:18px}.res small{font-size:11px;color:var(--muted)}
+.progressrow{display:flex;gap:9px;align-items:center;margin-top:7px}.progress{height:9px;background:#e8edf3;border-radius:99px;overflow:hidden;flex:1}.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0}.badge{font-size:12px;background:#fff;border:1px solid var(--line);padding:5px 9px;border-radius:99px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:23px;padding:clamp(18px,3vw,30px);box-shadow:var(--shadow)}
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:center}.hero h1{font-size:clamp(34px,5.5vw,60px);line-height:1.05;margin:0 0 12px}.hero p,.lead{font-size:17px;line-height:1.8;color:#475467}.bigicon{font-size:clamp(88px,15vw,170px);text-align:center}
+.kicker{font-size:14px;font-weight:900;color:var(--accent);letter-spacing:.08em;margin-bottom:6px}.sectionTitle{font-size:clamp(28px,4vw,42px);margin:0 0 8px}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.btn{border:0;border-radius:14px;padding:12px 17px;font-weight:800;min-height:46px}.primary{background:var(--accent);color:#fff}.secondary{background:#edf1f7;color:var(--ink)}.ghost{background:#fff;border:1px solid var(--line)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.cardgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.card{border:2px solid var(--line);border-radius:16px;background:#fff;padding:15px;text-align:left}.card:hover{border-color:#afbaff}.card.selected{border-color:var(--accent);background:var(--soft)}.card strong{display:block;font-size:17px;margin-bottom:5px}.card span{font-size:14px;line-height:1.5;color:#475467}
+.callout{background:#f4f7ff;border-left:5px solid var(--accent);border-radius:13px;padding:14px 16px;line-height:1.75;margin:15px 0}.feedback{background:#fafcff;border:1px solid var(--line);border-radius:14px;padding:15px;line-height:1.75;margin-top:15px}.hidden{display:none!important}
+.field{margin:11px 0}label{display:block;font-weight:700;font-size:14px;margin-bottom:5px}input[type=text],input[type=number],textarea,select{width:100%;padding:12px;border:1px solid #cad5e1;border-radius:12px;background:#fff}textarea{min-height:88px;resize:vertical}
+.sliderRow{display:grid;grid-template-columns:140px 1fr 65px;gap:10px;align-items:center;margin:11px 0}input[type=range]{width:100%}
+.issueGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.issue{border:2px solid var(--line);background:#fff;border-radius:14px;padding:13px;text-align:left}.issue.active{border-color:var(--accent2);background:#edfdf8}
+.delta{display:flex;gap:8px;flex-wrap:wrap}.pill{padding:6px 9px;background:#eef2f6;border-radius:99px;font-size:13px}.good{color:var(--good);font-weight:800}.bad{color:var(--bad);font-weight:800}
+.status{padding:12px 14px;border-radius:13px;margin-top:14px}.status.ok{background:#eaf8f1;color:#0d653e}.status.err{background:#fff0f0;color:#9b1c1c}.status.info{background:#eef4ff;color:#354acb}
+.tablewrap{overflow:auto;margin-top:14px}.table{width:100%;border-collapse:collapse;min-width:950px}.table th,.table td{border:1px solid var(--line);padding:9px;text-align:left;vertical-align:top;font-size:13px}.table th{background:#f6f9fc;position:sticky;top:0}
+.bars{display:grid;gap:9px}.barrow{display:grid;grid-template-columns:150px 1fr 44px;gap:8px;align-items:center}.bar{height:11px;background:#e9eef4;border-radius:99px;overflow:hidden}.bar span{display:block;height:100%;background:linear-gradient(90deg,#6a7cf0,#17a589)}
+.summaryGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:15px}.box{border:1px solid var(--line);border-radius:16px;padding:15px;background:#fbfcfe}.box h3{margin:0 0 10px}
+.small{font-size:13px;color:var(--muted)}footer{text-align:center;color:var(--muted);font-size:12px;padding:18px 0 36px}
+
+.teacherLock{display:inline-flex;align-items:center;gap:7px}
+.dashboardTop{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:15px 0}
+.metric{border:1px solid var(--line);border-radius:16px;padding:14px;background:#fbfcfe}
+.metric small{display:block;color:var(--muted);margin-bottom:4px}
+.metric b{font-size:26px}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:end;margin:14px 0}
+.toolbar .field{margin:0;min-width:160px;flex:1}
+.switchLabel{display:flex;align-items:center;gap:8px;font-weight:700;margin:0;background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-height:44px}
+.liveDot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#98a2b3;margin-right:6px}
+.liveDot.on{background:#12b76a;box-shadow:0 0 0 4px rgba(18,183,106,.12)}
+.notice{border:1px solid #f1d48a;background:#fff9e8;color:#7a5511;border-radius:13px;padding:12px 14px;margin:12px 0}
+.studentCard{border:1px solid var(--line);border-radius:15px;padding:12px;background:#fff;margin:8px 0}
+.detailGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.detailItem{background:#f8fafc;border-radius:11px;padding:10px}
+.detailItem small{display:block;color:var(--muted);margin-bottom:3px}
+.detailItem b{font-size:14px;word-break:break-word}
+.dialogBack{position:fixed;inset:0;background:rgba(17,24,39,.55);z-index:99;display:flex;align-items:center;justify-content:center;padding:20px}
+.dialog{width:min(760px,100%);max-height:85vh;overflow:auto;background:#fff;border-radius:22px;padding:22px;box-shadow:0 24px 70px rgba(0,0,0,.24)}
+.dialog h3{margin-top:0}
+.unsubmitted{display:flex;flex-wrap:wrap;gap:7px}.unsubmitted .pill{background:#fff4e5}
+@media(max-width:800px){.dashboardTop{grid-template-columns:repeat(2,1fr)}.detailGrid{grid-template-columns:1fr}}
+
+@media(max-width:800px){.topin,.hero,.grid2,.summaryGrid{grid-template-columns:1fr}.resources{grid-template-columns:repeat(5,1fr)}.grid3,.cardgrid,.issueGrid{grid-template-columns:1fr}.sliderRow{grid-template-columns:100px 1fr 55px}.barrow{grid-template-columns:100px 1fr 35px}}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="topin">
+    <div>
+      <div class="brand">🐇 狡兔三窟：全球策略家</div>
+      <div class="sub">教師即時儀表板版 V3.1｜Google 試算表 × Apps Script</div>
+      <div class="progressrow"><div class="progress"><span id="progressBar"></span></div><div class="badge" id="stageBadge">首頁</div></div>
+    </div>
+    <div class="resources">
+      <div class="res">💰<b id="money">80</b><small>財富</small></div>
+      <div class="res">❤️<b id="people">20</b><small>民心</small></div>
+      <div class="res">👑<b id="rep">70</b><small>聲望</small></div>
+      <div class="res">🤝<b id="rel">30</b><small>關係</small></div>
+      <div class="res">🏛️<b id="root">10</b><small>根基</small></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <section id="screen" class="panel"></section>
+  <footer>學生送出資料後寫入 Google 試算表「記錄」工作表；教師端需密碼登入，並可即時讀取全班結果。</footer>
+</div>
+
+<script>
+/* =========================================================
+   完成 Apps Script Web App 部署後，只要修改下面這一行。
+   範例：
+   const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/XXXXXXXX/exec';
+   ========================================================= */
+const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwG7fzbKPTm7A3Yg-quDPaN26J2EJf0x2DoIY-N1gqL8MQ0A3kyRuyAF8g6C32Fm_ls/exec';
+
+(() => {
+const screen = document.getElementById('screen');
+const stages = ['首頁','學生資料','序章','第一窟','危機','第二窟','第三窟','跨文化','全球談判','Boss 關','第四窟','提交'];
+const state = {
+  stage:0, mode:'student',
+  student:{className:'',seat:'',name:''},
+  money:80,people:20,rep:70,rel:30,root:10,
+  answers:{},
+  scores:{long:0,empathy:0,culture:0,negotiate:0,global:0,action:0},
+  submitted:false
+};
+
+const teacherState = {
+  token:'',
+  autoRefresh:false,
+  refreshSeconds:10,
+  timer:null,
+  lastPayload:null
+};
+
+function esc(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function clamp(n){return Math.max(0,Math.min(100,n))}
+function sync(){
+  ['money','people','rep','rel','root'].forEach(k=>document.getElementById(k).textContent=Math.round(state[k]));
+  document.getElementById('progressBar').style.width=`${Math.min(100,state.stage/(stages.length-1)*100)}%`;
+  document.getElementById('stageBadge').textContent=stages[state.stage]||'完成';
+}
+function delta(d){Object.entries(d).forEach(([k,v])=>state[k]=clamp(state[k]+v));sync()}
+function score(d){Object.entries(d).forEach(([k,v])=>state.scores[k]+=v)}
+function next(){state.stage++;sync();render();window.scrollTo({top:0,behavior:'smooth'})}
+function setNext(id,fn=next){const el=document.getElementById(id);if(el)el.onclick=fn}
+function uuid(){
+  if(window.crypto && crypto.randomUUID) return crypto.randomUUID();
+  return 'id-'+Date.now()+'-'+Math.random().toString(16).slice(2);
+}
+function isConfigured(){return GAS_WEB_APP_URL && !GAS_WEB_APP_URL.includes('XXXXXXX')}
+
+function home(){
+  screen.innerHTML=`
+  <div class="hero">
+    <div>
+      <div class="kicker">CLOUD CLASSROOM EDITION</div>
+      <h1>全班同步玩，<br>老師即時看結果。</h1>
+      <p>每位學生使用自己的裝置完成任務，最後按「提交」將學習結果寫入 Google 試算表。教師端採後端密碼驗證，登入成功後才能讀取「記錄」工作表與即時儀表板。</p>
+      <div class="btnrow">
+        <button class="btn primary" id="studentBtn">學生開始遊戲</button>
+        <button class="btn secondary teacherLock" id="teacherBtn">🔐 教師登入</button>
+      </div>
+      <div class="callout"><b>V3.1 教師控管：</b>教師密碼不放在 HTML。Apps Script 驗證成功後才發出短效 Session Token，未通過驗證者不能讀取學生資料。</div>
+    </div>
+    <div class="bigicon">🐇📱🔐</div>
+  </div>`;
+  document.getElementById('studentBtn').onclick=()=>{state.mode='student';next()};
+  document.getElementById('teacherBtn').onclick=teacherLogin;
+}
+function identity(){
+  screen.innerHTML=`
+  <div class="kicker">STEP 1｜學生資料</div>
+  <h2 class="sectionTitle">先確認你的身分</h2>
+  <div class="grid3">
+    <div class="field"><label>班級</label><input id="className" type="text" placeholder="例如：高二忠"></div>
+    <div class="field"><label>座號</label><input id="seat" type="number" min="1" max="99" placeholder="例如：15"></div>
+    <div class="field"><label>姓名</label><input id="name" type="text" placeholder="請輸入姓名"></div>
+  </div>
+  <div class="btnrow"><button class="btn primary" id="startBtn">開始策略任務</button><button class="btn ghost" id="backBtn">返回</button></div>`;
+  document.getElementById('backBtn').onclick=()=>location.reload();
+  document.getElementById('startBtn').onclick=()=>{
+    const c=document.getElementById('className').value.trim();
+    const seat=document.getElementById('seat').value.trim();
+    const n=document.getElementById('name').value.trim();
+    if(!c||!seat||!n){alert('請完整填寫班級、座號與姓名。');return}
+    state.student={className:c,seat:seat,name:n};next();
+  };
+}
+
+function intro(){
+  const opts=['貪得無厭','要求很多','善於試探','可能另有盤算'];
+  screen.innerHTML=`
+  <div class="kicker">MISSION 0｜長鋏歸來</div>
+  <h2 class="sectionTitle">你怎麼看馮諼？</h2>
+  <p class="lead">只看到「食無魚、出無車、無以為家」時，你的第一印象是什麼？</p>
+  <div class="cardgrid">${opts.map(x=>`<button class="card pick" data-v="${x}"><strong>${x}</strong><span>先記住這個判斷，後面再回來檢查。</span></button>`).join('')}</div>
+  <div id="fb" class="hidden"></div>`;
+  document.querySelectorAll('.pick').forEach(b=>b.onclick=()=>{
+    state.answers.firstImpression=b.dataset.v;
+    document.querySelectorAll('.pick').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');
+    const fb=document.getElementById('fb');fb.classList.remove('hidden');
+    fb.innerHTML=`<div class="feedback">你目前的判斷是：<b>${esc(b.dataset.v)}</b>。<div class="btnrow"><button class="btn primary" id="go">進入第一窟</button></div></div>`;
+    setNext('go');
+  });
+}
+
+function cave1(){
+  const opts=[
+    ['A','全數收回','維持現金與秩序，但百姓壓力最大。'],
+    ['B','減免部分','在收入與民心之間折衷。'],
+    ['C','焚燒債券','犧牲眼前利益，換取信任。'],
+    ['D','延後收取','先保留債權，等待未來處理。']
+  ];
+  screen.innerHTML=`
+  <div class="kicker">MISSION 1｜第一窟：市義於薛</div>
+  <h2 class="sectionTitle">薛地討債</h2>
+  <p class="lead">孟嘗君派馮諼前往薛地收債。百姓生活困苦，你會怎麼做？</p>
+  <div class="cardgrid">${opts.map(([k,t,d])=>`<button class="card pick" data-v="${k}"><strong>${k}｜${t}</strong><span>${d}</span></button>`).join('')}</div>
+  <div id="fb" class="hidden"></div>`;
+  const outcome={
+    A:{d:{money:25,people:-30,rep:5},txt:'收入增加，但薛地民怨升高。',s:{long:0,empathy:0}},
+    B:{d:{money:8,people:15,rel:5},txt:'保住部分收入，也減輕百姓負擔。',s:{long:2,empathy:2}},
+    C:{d:{money:-35,people:55,rel:15},txt:'財富下降，但薛地信任大幅提升。',s:{long:5,empathy:4}},
+    D:{d:{money:0,people:5},txt:'暫時避免衝突，但問題仍未解決。',s:{long:1,empathy:1}}
+  };
+  document.querySelectorAll('.pick').forEach(b=>b.onclick=()=>{
+    if(state.answers.cave1)return;
+    const v=b.dataset.v,o=outcome[v];state.answers.cave1=v;delta(o.d);score(o.s);b.classList.add('selected');
+    const fb=document.getElementById('fb');fb.classList.remove('hidden');
+    fb.innerHTML=`<div class="feedback"><b>即時結果：</b>${o.txt}<div class="delta">${Object.entries(o.d).map(([k,x])=>`<span class="pill ${x>=0?'good':'bad'}">${{money:'💰',people:'❤️',rep:'👑',rel:'🤝',root:'🏛️'}[k]} ${x>0?'+':''}${x}</span>`).join('')}</div><p>真正影響可能稍後才會出現。</p><div class="btnrow"><button class="btn primary" id="go">繼續</button></div></div>`;
+    setNext('go');
+  });
+}
+
+function crisis(){
+  const c=state.answers.cave1;
+  const data={
+    A:{txt:'你先前選擇強勢收債。孟嘗君失勢後，薛地百姓多半保持距離。',d:{people:-10,root:-5}},
+    B:{txt:'部分百姓願意幫助孟嘗君，但支持仍有限。',d:{people:5,root:8}},
+    C:{txt:'先前焚券市義的善意，在危機中轉化成真正的民心與安全據點。',d:{people:15,root:20,rep:8}},
+    D:{txt:'你沒有激化矛盾，但也沒有建立強烈支持。',d:{root:2}}
+  }[c];delta(data.d);
+  screen.innerHTML=`
+  <div class="kicker">CRISIS EVENT｜延遲後果</div>
+  <h2 class="sectionTitle">⚠️ 孟嘗君遭齊王罷相</h2>
+  <p class="lead">${data.txt}</p>
+  <div class="callout">策略的價值，不一定立刻顯現。第一窟真正交換的，是現在與未來。</div>
+  <div class="btnrow"><button class="btn primary" id="go">進入第二窟</button></div>`;
+  setNext('go');
+}
+
+function cave2(){
+  const opts=['梁王','孟嘗君','齊王','薛地百姓'];
+  screen.innerHTML=`
+  <div class="kicker">MISSION 2｜第二窟：遊梁造勢</div>
+  <h2 class="sectionTitle">馮諼真正想影響誰？</h2>
+  <p class="lead">梁國重金邀請孟嘗君。這場布局裡，真正要被改變判斷的人是誰？</p>
+  <div class="cardgrid">${opts.map(x=>`<button class="card pick" data-v="${x}"><strong>${x}</strong><span>選擇你認為的核心目標。</span></button>`).join('')}</div>
+  <div id="fb" class="hidden"></div>`;
+  document.querySelectorAll('.pick').forEach(b=>b.onclick=()=>{
+    if(state.answers.cave2)return;
+    const v=b.dataset.v;state.answers.cave2=v;b.classList.add('selected');
+    const ok=v==='齊王';if(ok){delta({rep:15,rel:10});score({long:4,negotiate:5,empathy:3})}else{delta({rep:-5,rel:2});score({negotiate:1,empathy:1})}
+    const fb=document.getElementById('fb');fb.classList.remove('hidden');
+    fb.innerHTML=`<div class="feedback">${ok?'<b>推理成功。</b>':'<b>這個角色也受到影響，但並非核心目標。</b>'}<div class="callout">馮諼藉梁國的重視，讓齊王重新意識到孟嘗君的價值。</div><div class="btnrow"><button class="btn primary" id="go">進入第三窟</button></div></div>`;
+    setNext('go');
+  });
+}
+
+function cave3(){
+  screen.innerHTML=`
+  <div class="kicker">MISSION 3｜第三窟：立宗廟於薛</div>
+  <h2 class="sectionTitle">100 枚策略幣：十年布局</h2>
+  <p class="lead">請配置 100 枚策略幣，在短期力量與長期根基之間做取捨。</p>
+  ${[['gold','🪙 黃金'],['army','⚔️ 軍隊'],['house','🏠 豪宅'],['temple','🏛️ 宗廟'],['welfare','❤️ 民生'],['diplomacy','🤝 外交']].map(([k,n])=>`<div class="sliderRow"><label>${n}</label><input type="range" min="0" max="100" value="0" data-k="${k}"><output>0</output></div>`).join('')}
+  <div class="callout">已分配：<b id="used">0</b> / 100</div>
+  <div class="btnrow"><button class="btn primary" id="submit" disabled>確認配置</button></div><div id="fb"></div>`;
+  const rs=[...document.querySelectorAll('input[type=range]')],used=document.getElementById('used'),btn=document.getElementById('submit');
+  function syncAlloc(changed){let sum=rs.reduce((s,r)=>s+Number(r.value),0);if(sum>100){changed.value=Math.max(0,Number(changed.value)-(sum-100));sum=100}rs.forEach(r=>r.nextElementSibling.value=r.value);used.textContent=sum;btn.disabled=sum!==100}
+  rs.forEach(r=>r.addEventListener('input',()=>syncAlloc(r)));
+  btn.onclick=()=>{
+    const a={};rs.forEach(r=>a[r.dataset.k]=Number(r.value));state.answers.allocation=a;
+    const longVal=a.temple+a.welfare+a.diplomacy;
+    delta({root:Math.round(a.temple*.35+a.welfare*.15),rep:Math.round(a.army*.08+a.diplomacy*.12),rel:Math.round(a.diplomacy*.12+a.welfare*.08)});
+    score({long:Math.round(longVal/15),empathy:Math.round(a.welfare/25),negotiate:Math.round(a.diplomacy/25)});
+    document.getElementById('fb').innerHTML=`<div class="feedback">你的長期投資（宗廟＋民生＋外交）為 <b>${longVal}</b>。<div class="callout">第三窟的重點，是讓支持與位置制度化、長期化。</div><div class="btnrow"><button class="btn primary" id="go">走向世界</button></div></div>`;setNext('go');
+  };
+}
+
+function culture(){
+  const opts=['判斷誰對誰錯','先理解表達習慣','兩邊都不要說','文化決定一切'];
+  screen.innerHTML=`
+  <div class="kicker">GLOBAL MISSION 01｜跨文化理解</div>
+  <h2 class="sectionTitle">直接，還是委婉？</h2>
+  <p class="lead">A 同學習慣直接表達不同意見；B 同學偏好先維持關係，再委婉表達。你會怎麼處理？</p>
+  <div class="cardgrid">${opts.map(x=>`<button class="card pick" data-v="${x}"><strong>${x}</strong></button>`).join('')}</div><div id="fb"></div>`;
+  document.querySelectorAll('.pick').forEach(b=>b.onclick=()=>{
+    if(state.answers.culture)return;const v=b.dataset.v;state.answers.culture=v;b.classList.add('selected');
+    if(v==='先理解表達習慣'){delta({rel:12,people:5});score({culture:5,empathy:5})}else{delta({rel:-4});score({culture:1,empathy:1})}
+    document.getElementById('fb').innerHTML=`<div class="feedback"><div class="callout">理解差異，不等於同意所有差異；而是先理解，再判斷。文化可以提供線索，但不能把個人簡化成刻板印象。</div><div class="btnrow"><button class="btn primary" id="go">進入全球談判</button></div></div>`;setNext('go');
+  });
+}
+
+function negotiation(){
+  const countries=[
+    ['🌳 森林國','森林資源豐富，但開發壓力大。'],
+    ['🏭 工業國','工業占經濟比重高，快速減碳可能造成失業。'],
+    ['🏝️ 海洋島國','海平面上升直接威脅國土與居住安全。'],
+    ['⚡ 能源國','經濟依賴能源出口，需要轉型時間。']
+  ];
+  if(!state.answers.country) state.answers.country=countries[Math.floor(Math.random()*countries.length)][0];
+  const c=countries.find(x=>x[0]===state.answers.country);
+  screen.innerHTML=`
+  <div class="kicker">GLOBAL MISSION 02｜國際談判</div>
+  <h2 class="sectionTitle">${c[0]}</h2><div class="callout"><b>你的國情：</b>${c[1]}</div>
+  <div class="grid2">
+    <label>OUR POSITION｜我們的立場<textarea id="p1"></textarea></label>
+    <label>YOUR NEEDS｜我理解你們在意<textarea id="p2"></textarea></label>
+    <label>COMMON GROUND｜我們共同在意<textarea id="p3"></textarea></label>
+    <label>OUR SOLUTION｜因此我們建議<textarea id="p4"></textarea></label>
+  </div>
+  <div class="btnrow"><button class="btn primary" id="submit">提交談判方案</button></div>`;
+  document.getElementById('submit').onclick=()=>{
+    const v=['p1','p2','p3','p4'].map(id=>document.getElementById(id).value.trim());
+    if(v.some(x=>x.length<4)){alert('請完整填寫四句談判內容。');return}
+    [state.answers.position,state.answers.needs,state.answers.commonGround,state.answers.solution]=v;
+    delta({rel:15,rep:8});score({negotiate:5,empathy:4,global:4});next();
+  };
+}
+
+function boss(){
+  const issues=['🌡️ 氣候變遷','🕊️ 和平與衝突','🤖 AI 與科技倫理','🌊 海洋環境','⚖️ 人權與平等','🌾 糧食與資源'];
+  screen.innerHTML=`
+  <div class="kicker">BOSS MISSION｜人類的三窟</div>
+  <h2 class="sectionTitle">只能選三項，你會保留什麼？</h2>
+  <p class="lead">沒有標準答案。請選三項，並說明你看見的風險與長期價值。</p>
+  <div class="issueGrid">${issues.map(x=>`<button class="issue" data-v="${x}"><strong>${x}</strong></button>`).join('')}</div>
+  <div class="callout">已選：<b id="count">0</b> / 3</div>
+  <label>選擇理由<textarea id="reason" placeholder="請用一句完整的話說明。"></textarea></label>
+  <div class="btnrow"><button class="btn primary" id="submit" disabled>完成 Boss 關</button></div>`;
+  const set=new Set();document.querySelectorAll('.issue').forEach(b=>b.onclick=()=>{const v=b.dataset.v;if(set.has(v)){set.delete(v);b.classList.remove('active')}else if(set.size<3){set.add(v);b.classList.add('active')}document.getElementById('count').textContent=set.size;document.getElementById('submit').disabled=set.size!==3});
+  document.getElementById('submit').onclick=()=>{const r=document.getElementById('reason').value.trim();if(r.length<8){alert('請至少寫一句完整理由。');return}state.answers.boss=[...set];state.answers.bossReason=r;delta({root:10,rel:8});score({global:6,long:3,empathy:3});next()};
+}
+
+function action(){
+  screen.innerHTML=`
+  <div class="kicker">FINAL MISSION｜我的第四窟</div>
+  <h2 class="sectionTitle">把思考變成行動</h2>
+  <p class="lead">「為了讓自己與世界變得更好，未來一個月，我願意……」</p>
+  <textarea id="actionText" placeholder="例如：遇到不同意見時先理解理由；主動了解一項全球議題；查證 AI 產生的國際資訊。"></textarea>
+  <div class="btnrow"><button class="btn primary" id="submit">完成行動承諾</button></div>`;
+  document.getElementById('submit').onclick=()=>{const v=document.getElementById('actionText').value.trim();if(v.length<8){alert('請寫下一項具體可執行的行動。');return}state.answers.action=v;score({action:6});delta({root:5});next()};
+}
+
+function submitPage(){
+  const a=state.answers.allocation||{};
+  screen.innerHTML=`
+  <div class="kicker">SUBMIT｜送出學習紀錄</div>
+  <h2 class="sectionTitle">任務完成，準備提交</h2>
+  <p class="lead">${esc(state.student.className)} ${esc(state.student.seat)} 號 ${esc(state.student.name)}，請確認後將結果寫入 Google 試算表。</p>
+  <div class="grid2">
+    <div class="box">
+      <h3>核心選擇</h3>
+      <p>第一印象：${esc(state.answers.firstImpression||'')}</p>
+      <p>第一窟：${esc(state.answers.cave1||'')}</p>
+      <p>第二窟：${esc(state.answers.cave2||'')}</p>
+      <p>跨文化：${esc(state.answers.culture||'')}</p>
+      <p>人類三窟：${(state.answers.boss||[]).map(esc).join('、')}</p>
+    </div>
+    <div class="box">
+      <h3>最終資源</h3>
+      <div class="delta"><span class="pill">💰 ${state.money}</span><span class="pill">❤️ ${state.people}</span><span class="pill">👑 ${state.rep}</span><span class="pill">🤝 ${state.rel}</span><span class="pill">🏛️ ${state.root}</span></div>
+      <p><b>我的第四窟：</b>${esc(state.answers.action||'')}</p>
+    </div>
+  </div>
+  <div id="submitStatus" class="${isConfigured()?'status info':'status err'}">
+    ${isConfigured()?'尚未提交。':'尚未設定 Apps Script Web App URL。請先修改 HTML 中的 GAS_WEB_APP_URL。'}
+  </div>
+  <div class="btnrow">
+    <button class="btn primary" id="cloudSubmit" ${isConfigured()?'':'disabled'}>提交到 Google 試算表</button>
+    <button class="btn ghost" id="restart">重新開始</button>
+  </div>`;
+  document.getElementById('restart').onclick=()=>location.reload();
+  document.getElementById('cloudSubmit').onclick=submitToCloud;
+}
+
+function buildPayload(){
+  const a=state.answers.allocation||{};
+  return {
+    action:'submit',
+    submissionId:uuid(),
+    className:state.student.className,
+    seat:state.student.seat,
+    name:state.student.name,
+    firstImpression:state.answers.firstImpression||'',
+    cave1:state.answers.cave1||'',
+    cave2:state.answers.cave2||'',
+    gold:a.gold||0,army:a.army||0,house:a.house||0,temple:a.temple||0,welfare:a.welfare||0,diplomacy:a.diplomacy||0,
+    culture:state.answers.culture||'',
+    country:state.answers.country||'',
+    position:state.answers.position||'',
+    needs:state.answers.needs||'',
+    commonGround:state.answers.commonGround||'',
+    solution:state.answers.solution||'',
+    boss:(state.answers.boss||[]).join('｜'),
+    bossReason:state.answers.bossReason||'',
+    globalAction:state.answers.action||'',
+    money:state.money,people:state.people,rep:state.rep,rel:state.rel,root:state.root,
+    longScore:state.scores.long,empathyScore:state.scores.empathy,cultureScore:state.scores.culture,
+    negotiateScore:state.scores.negotiate,globalScore:state.scores.global,actionScore:state.scores.action,
+    userAgent:navigator.userAgent
+  };
+}
+
+async function submitToCloud(){
+  const btn=document.getElementById('cloudSubmit'),status=document.getElementById('submitStatus');
+  btn.disabled=true;btn.textContent='提交中…';status.className='status info';status.textContent='正在寫入 Google 試算表…';
+  try{
+    const payload=buildPayload();
+    const res=await fetch(GAS_WEB_APP_URL,{
+      method:'POST',
+      redirect:'follow',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify(payload)
+    });
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data=await res.json();
+    if(!data.ok) throw new Error(data.message||'Apps Script 回傳失敗');
+    state.submitted=true;
+    status.className='status ok';status.innerHTML=`✅ 提交成功！<br>伺服器時間：${esc(data.timestamp||'')}<br>資料列：${esc(data.row||'')}`;
+    btn.textContent='已提交';btn.disabled=true;
+  }catch(err){
+    status.className='status err';status.innerHTML=`❌ 提交失敗：${esc(err.message)}<br><span class="small">請確認 Web App URL、部署權限與網路連線。</span>`;
+    btn.textContent='重新提交';btn.disabled=false;
+  }
+}
+
+function teacherLogin(){
+  state.mode='teacher';state.stage=0;sync();
+  stopAutoRefresh();
+  screen.innerHTML=`
+  <div class="kicker">TEACHER ACCESS｜教師驗證</div>
+  <h2 class="sectionTitle">🔐 教師登入</h2>
+  <p class="lead">教師端資料受到 Apps Script 後端驗證保護。學生即使點到這個入口，也必須通過教師密碼驗證才能讀取填答資料。</p>
+  <div class="grid2">
+    <div>
+      <div class="field"><label>教師密碼</label><input id="teacherPassword" type="password" autocomplete="current-password" placeholder="請輸入教師密碼"></div>
+      <div class="btnrow">
+        <button class="btn primary" id="teacherLoginBtn" ${isConfigured()?'':'disabled'}>登入教師端</button>
+        <button class="btn ghost" id="homeBtn">返回首頁</button>
+      </div>
+      <div id="loginStatus" class="${isConfigured()?'status info':'status err'}">${isConfigured()?'尚未登入。':'尚未設定 GAS_WEB_APP_URL。'}</div>
+    </div>
+    <div class="box">
+      <h3>安全機制</h3>
+      <ul>
+        <li>教師密碼只在 Apps Script 後端驗證。</li>
+        <li>HTML 不保存教師密碼。</li>
+        <li>驗證成功後取得短效 Session Token。</li>
+        <li>讀取學生紀錄時必須攜帶有效 Token。</li>
+        <li>Token 到期後需重新登入。</li>
+      </ul>
+    </div>
+  </div>`;
+  document.getElementById('homeBtn').onclick=()=>location.reload();
+  document.getElementById('teacherPassword').addEventListener('keydown',e=>{
+    if(e.key==='Enter') document.getElementById('teacherLoginBtn').click();
+  });
+  document.getElementById('teacherLoginBtn').onclick=async()=>{
+    const password=document.getElementById('teacherPassword').value;
+    const status=document.getElementById('loginStatus'),btn=document.getElementById('teacherLoginBtn');
+    if(!password){status.className='status err';status.textContent='請輸入教師密碼。';return}
+    btn.disabled=true;btn.textContent='驗證中…';status.className='status info';status.textContent='正在驗證教師身分…';
+    try{
+      const res=await fetch(GAS_WEB_APP_URL,{
+        method:'POST',
+        redirect:'follow',
+        headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body:JSON.stringify({action:'teacherLogin',password})
+      });
+      const data=await res.json();
+      if(!res.ok || !data.ok || !data.token) throw new Error(data.message||'驗證失敗');
+      teacherState.token=data.token;
+      status.className='status ok';status.textContent='✅ 教師驗證成功。';
+      teacherDashboard();
+    }catch(err){
+      status.className='status err';status.textContent='❌ '+err.message;
+      btn.disabled=false;btn.textContent='登入教師端';
+    }
+  };
+}
+
+function teacherDashboard(){
+  if(!teacherState.token){teacherLogin();return}
+  state.mode='teacher';state.stage=0;sync();
+  stopAutoRefresh();
+  screen.innerHTML=`
+  <div class="kicker">TEACHER LIVE DASHBOARD</div>
+  <h2 class="sectionTitle"><span class="liveDot" id="liveDot"></span>教師即時儀表板</h2>
+
+  <div class="toolbar">
+    <div class="field"><label>班級篩選</label><input id="classFilter" type="text" placeholder="空白＝全部；例如：高二忠"></div>
+    <div class="field"><label>學生搜尋</label><input id="studentFilter" type="text" placeholder="座號或姓名"></div>
+    <div class="field"><label>自動更新間隔</label>
+      <select id="refreshSeconds"><option value="10">10 秒</option><option value="20">20 秒</option><option value="30">30 秒</option><option value="60">60 秒</option></select>
+    </div>
+    <label class="switchLabel"><input type="checkbox" id="autoRefresh"> 自動更新</label>
+  </div>
+
+  <div class="btnrow">
+    <button class="btn primary" id="loadBtn">立即重新整理</button>
+    <button class="btn secondary" id="logoutBtn">登出教師端</button>
+    <button class="btn ghost" id="homeBtn">回首頁</button>
+  </div>
+
+  <div id="teacherStatus" class="status info">正在讀取最新資料…</div>
+  <div id="teacherResult"></div>`;
+
+  document.getElementById('homeBtn').onclick=()=>{stopAutoRefresh();location.reload()};
+  document.getElementById('logoutBtn').onclick=()=>{stopAutoRefresh();teacherState.token='';teacherLogin()};
+  document.getElementById('loadBtn').onclick=loadRecords;
+  document.getElementById('classFilter').addEventListener('input',()=>teacherState.lastPayload && renderTeacherPayload(teacherState.lastPayload));
+  document.getElementById('studentFilter').addEventListener('input',()=>teacherState.lastPayload && renderTeacherPayload(teacherState.lastPayload));
+  document.getElementById('refreshSeconds').onchange=e=>{
+    teacherState.refreshSeconds=Number(e.target.value)||10;
+    if(teacherState.autoRefresh) startAutoRefresh();
+  };
+  document.getElementById('autoRefresh').onchange=e=>{
+    teacherState.autoRefresh=e.target.checked;
+    if(teacherState.autoRefresh) startAutoRefresh(); else stopAutoRefresh(false);
+    updateLiveDot();
+  };
+
+  loadRecords();
+}
+
+function startAutoRefresh(){
+  stopAutoRefresh(false);
+  teacherState.autoRefresh=true;
+  const cb=document.getElementById('autoRefresh'); if(cb) cb.checked=true;
+  teacherState.timer=setInterval(()=>loadRecords(true),teacherState.refreshSeconds*1000);
+  updateLiveDot();
+}
+function stopAutoRefresh(reset=true){
+  if(teacherState.timer){clearInterval(teacherState.timer);teacherState.timer=null}
+  if(reset) teacherState.autoRefresh=false;
+  updateLiveDot();
+}
+function updateLiveDot(){
+  const dot=document.getElementById('liveDot');
+  if(dot) dot.classList.toggle('on',teacherState.autoRefresh);
+}
+
+async function loadRecords(silent=false){
+  if(!teacherState.token){teacherLogin();return}
+  const status=document.getElementById('teacherStatus'),result=document.getElementById('teacherResult');
+  if(!status)return;
+  if(!silent){status.className='status info';status.textContent='正在讀取「記錄」工作表…'}
+  try{
+    const url=GAS_WEB_APP_URL+(GAS_WEB_APP_URL.includes('?')?'&':'?')+
+      'action=records&token='+encodeURIComponent(teacherState.token)+'&t='+Date.now();
+    const res=await fetch(url,{method:'GET',redirect:'follow',cache:'no-store'});
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data=await res.json();
+    if(!data.ok){
+      if(data.code==='UNAUTHORIZED'){
+        teacherState.token='';stopAutoRefresh();
+        throw new Error('教師登入已失效，請重新登入。');
+      }
+      throw new Error(data.message||'讀取失敗');
+    }
+    teacherState.lastPayload=data;
+    renderTeacherPayload(data);
+    const now=new Date().toLocaleTimeString('zh-TW',{hour12:false});
+    status.className='status ok';
+    status.innerHTML=`✅ 已更新｜${now}｜試算表原始紀錄 ${Number(data.total||0)} 筆`;
+  }catch(err){
+    status.className='status err';status.innerHTML=`❌ ${esc(err.message)}`;
+    if(String(err.message).includes('重新登入')) setTimeout(teacherLogin,700);
+  }
+}
+
+function latestUnique(records){
+  const map=new Map();
+  records.forEach((r,idx)=>{
+    const key=[r.className||'',r.seat||'',r.name||''].join('||');
+    map.set(key,{...r,__rowIndex:idx});
+  });
+  return [...map.values()];
+}
+
+function applyTeacherFilters(records){
+  const classEl=document.getElementById('classFilter'), studentEl=document.getElementById('studentFilter');
+  const classQ=(classEl?classEl.value:'').trim().toLowerCase();
+  const studentQ=(studentEl?studentEl.value:'').trim().toLowerCase();
+  return records.filter(r=>
+    (!classQ||String(r.className||'').toLowerCase().includes(classQ)) &&
+    (!studentQ||(String(r.seat||'')+' '+String(r.name||'')).toLowerCase().includes(studentQ))
+  );
+}
+
+function counts(rows,key){
+  const o={};rows.forEach(r=>{const v=r[key];if(v)o[v]=(o[v]||0)+1});return o;
+}
+function bossCounts(rows){
+  const o={};rows.forEach(r=>String(r.boss||'').split('｜').filter(Boolean).forEach(v=>o[v]=(o[v]||0)+1));return o;
+}
+function bars(obj){
+  const total=Object.values(obj).reduce((a,b)=>a+b,0)||1;
+  if(!Object.keys(obj).length)return '<div class="small">尚無資料</div>';
+  return `<div class="bars">${Object.entries(obj).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="barrow"><div>${esc(k)}</div><div class="bar"><span style="width:${Math.round(v/total*100)}%"></span></div><div>${v}</div></div>`).join('')}</div>`;
+}
+function avg(rows,key){return rows.length?(rows.reduce((s,r)=>s+(Number(r[key])||0),0)/rows.length).toFixed(1):'0.0'}
+
+function rosterForFilter(roster){
+  const classEl=document.getElementById('classFilter');
+  const classQ=(classEl?classEl.value:'').trim().toLowerCase();
+  return (roster||[]).filter(r=>!classQ||String(r.className||'').toLowerCase().includes(classQ));
+}
+
+function getUnsubmitted(roster,submitted){
+  if(!roster.length)return [];
+  const submittedKeys=new Set(submitted.map(r=>[String(r.className||'').trim(),String(r.seat||'').trim()].join('||')));
+  return roster.filter(r=>!submittedKeys.has([String(r.className||'').trim(),String(r.seat||'').trim()].join('||')));
+}
+
+function renderTeacherPayload(data){
+  const uniqueAll=latestUnique(Array.isArray(data.records)?data.records:[]);
+  const rows=applyTeacherFilters(uniqueAll);
+  const roster=rosterForFilter(Array.isArray(data.roster)?data.roster:[]);
+  const unsubmitted=getUnsubmitted(roster,rows);
+  const completion=roster.length?Math.round((Math.max(0,roster.length-unsubmitted.length)/roster.length)*100):null;
+
+  const result=document.getElementById('teacherResult');
+  if(!result)return;
+
+  result.innerHTML=`
+    <div class="dashboardTop">
+      <div class="metric"><small>有效學生數</small><b>${rows.length}</b></div>
+      <div class="metric"><small>原始提交筆數</small><b>${data.total||0}</b></div>
+      <div class="metric"><small>名單人數</small><b>${roster.length||'—'}</b></div>
+      <div class="metric"><small>完成率</small><b>${completion===null?'—':completion+'%'}</b></div>
+    </div>
+
+    ${roster.length?`
+      <div class="box">
+        <h3>尚未提交學生（${unsubmitted.length}）</h3>
+        <div class="unsubmitted">${unsubmitted.length?unsubmitted.map(r=>`<span class="pill">${esc(r.className||'')} ${esc(r.seat||'')}號 ${esc(r.name||'')}</span>`).join(''):'<span class="good">全員已提交</span>'}</div>
+      </div>`:
+      `<div class="notice">若要顯示「未提交學生」與完成率，請在同一份試算表建立「名單」工作表，欄位依序為 <b>className、seat、name</b>。</div>`
+    }
+
+    <div class="summaryGrid">
+      <div class="box"><h3>第一窟選擇</h3>${bars(counts(rows,'cave1'))}</div>
+      <div class="box"><h3>第二窟判斷</h3>${bars(counts(rows,'cave2'))}</div>
+      <div class="box"><h3>跨文化任務</h3>${bars(counts(rows,'culture'))}</div>
+      <div class="box"><h3>人類三窟</h3>${bars(bossCounts(rows))}</div>
+    </div>
+
+    <div class="callout"><b>全班平均資源：</b>
+      💰 ${avg(rows,'money')}　❤️ ${avg(rows,'people')}　👑 ${avg(rows,'rep')}　🤝 ${avg(rows,'rel')}　🏛️ ${avg(rows,'root')}
+    </div>
+
+    <div class="box">
+      <h3>學生填答明細</h3>
+      <div class="small">若同一位學生重複提交，儀表板以最新一筆為準；原始資料仍保留在「記錄」工作表中。</div>
+      <div class="tablewrap"><table class="table">
+        <thead><tr><th>時間</th><th>班級</th><th>座號</th><th>姓名</th><th>第一窟</th><th>第二窟</th><th>跨文化</th><th>人類三窟</th><th>第四窟</th><th>詳細</th></tr></thead>
+        <tbody>${rows.map((r,i)=>`<tr>
+          <td>${esc(r.timestamp||'')}</td><td>${esc(r.className||'')}</td><td>${esc(r.seat||'')}</td><td>${esc(r.name||'')}</td>
+          <td>${esc(r.cave1||'')}</td><td>${esc(r.cave2||'')}</td><td>${esc(r.culture||'')}</td>
+          <td>${esc(r.boss||'')}</td><td>${esc(r.globalAction||'')}</td>
+          <td><button class="btn secondary detailBtn" data-index="${i}">查看</button></td>
+        </tr>`).join('')}</tbody>
+      </table></div>
+    </div>`;
+
+  document.querySelectorAll('.detailBtn').forEach(btn=>btn.onclick=()=>showStudentDetail(rows[Number(btn.dataset.index)]));
+}
+
+function showStudentDetail(r){
+  const back=document.createElement('div');back.className='dialogBack';
+  back.innerHTML=`
+    <div class="dialog" role="dialog" aria-modal="true" aria-label="學生完整作答">
+      <div class="btnrow" style="justify-content:space-between;margin-top:0">
+        <div><h3>${esc(r.className||'')} ${esc(r.seat||'')}號 ${esc(r.name||'')}</h3><div class="small">${esc(r.timestamp||'')}</div></div>
+        <button class="btn ghost closeDialog">關閉</button>
+      </div>
+      <div class="detailGrid">
+        ${detailItem('第一印象',r.firstImpression)}
+        ${detailItem('第一窟',r.cave1)}
+        ${detailItem('第二窟',r.cave2)}
+        ${detailItem('跨文化',r.culture)}
+        ${detailItem('國家角色',r.country)}
+        ${detailItem('OUR POSITION',r.position)}
+        ${detailItem('YOUR NEEDS',r.needs)}
+        ${detailItem('COMMON GROUND',r.commonGround)}
+        ${detailItem('OUR SOLUTION',r.solution)}
+        ${detailItem('人類三窟',r.boss)}
+        ${detailItem('Boss 理由',r.bossReason)}
+        ${detailItem('第四窟',r.globalAction)}
+        ${detailItem('策略幣配置',`黃金 ${r.gold||0}／軍隊 ${r.army||0}／豪宅 ${r.house||0}／宗廟 ${r.temple||0}／民生 ${r.welfare||0}／外交 ${r.diplomacy||0}`)}
+        ${detailItem('最終資源',`財富 ${r.money||0}／民心 ${r.people||0}／聲望 ${r.rep||0}／關係 ${r.rel||0}／根基 ${r.root||0}`)}
+      </div>
+    </div>`;
+  document.body.appendChild(back);
+  const close=()=>back.remove();
+  back.querySelector('.closeDialog').onclick=close;
+  back.onclick=e=>{if(e.target===back)close()};
+}
+function detailItem(label,value){
+  return `<div class="detailItem"><small>${esc(label)}</small><b>${esc(value===undefined||value===null?'':value)}</b></div>`;
+}
+function render(){
+  sync();
+  [home,identity,intro,cave1,crisis,cave2,cave3,culture,negotiation,boss,action,submitPage][state.stage]();
+}
+render();
+})();
+</script>
+</body>
+</html>
