@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>狡兔三窟：全球策略家｜顯示與操作設定版 V3.6</title>
+<title>狡兔三窟：全球策略家｜亮彩豐富版 V3.7</title>
 <style>
 :root{
   --bg:#f6f8fb;--card:#fff;--ink:#172033;--muted:#667085;--line:#d7e0ea;
@@ -135,6 +135,206 @@ html.layout-landscape .grid2{grid-template-columns:1fr 1fr}
 html.layout-landscape .summaryGrid{grid-template-columns:repeat(2,1fr)}
 html.lang-en [data-lang="zh"]{display:none!important}
 html:not(.lang-en) [data-lang="en"]{display:none!important}
+
+:root{
+  --accent:#6f5cff;
+  --accent2:#00c2ff;
+  --accent3:#ff7a59;
+  --accent4:#ffd93d;
+  --accent5:#3ddc97;
+  --bg:#f7fbff;
+  --card:#ffffff;
+  --ink:#13233a;
+  --muted:#5f6f86;
+  --line:#d8e4f4;
+  --soft:#f4f8ff;
+  --shadow:0 14px 34px rgba(50,74,141,.12);
+}
+body{
+  background:
+    radial-gradient(circle at 10% 0%, rgba(255,217,61,.28), transparent 22%),
+    radial-gradient(circle at 90% 8%, rgba(111,92,255,.18), transparent 24%),
+    radial-gradient(circle at 92% 86%, rgba(61,220,151,.18), transparent 22%),
+    linear-gradient(180deg,#fbfdff 0%, #eef5ff 100%);
+}
+.top{
+  background:rgba(255,255,255,.92);
+  box-shadow:0 6px 24px rgba(88,113,186,.08);
+}
+.panel{
+  background:linear-gradient(180deg,#ffffff 0%,#fafdff 100%);
+  border:1px solid #dbe8f6;
+}
+.brand{
+  background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+.res{
+  background:linear-gradient(180deg,#ffffff,#f7fbff);
+  box-shadow:0 6px 18px rgba(92,110,176,.08);
+}
+.res:nth-child(1){border-color:#ffe0b2}
+.res:nth-child(2){border-color:#ffcdd2}
+.res:nth-child(3){border-color:#d1c4e9}
+.res:nth-child(4){border-color:#b2ebf2}
+.res:nth-child(5){border-color:#c8e6c9}
+.btn.primary{
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  box-shadow:0 10px 22px rgba(103,104,255,.28);
+}
+.btn.secondary{
+  background:linear-gradient(90deg,#fff7e9,#eef7ff);
+  border:1px solid #dbe7f7;
+}
+.btn.ghost{
+  background:linear-gradient(180deg,#fff,#f7fbff);
+}
+.card,.issue,.youthBtn,.box,.feedback,.callout,.player,.metric,.detailItem,.countryBox,.voteBox,.stat{
+  box-shadow:0 8px 20px rgba(94,116,181,.08);
+}
+.card{
+  background:linear-gradient(180deg,#fff,#fbfdff);
+  border:2px solid #deebff;
+}
+.card:hover,.issue:hover,.youthBtn:hover{
+  transform:translateY(-2px) scale(1.01);
+  box-shadow:0 14px 30px rgba(104,109,255,.16);
+}
+.card.selected,.card.active,.issue.active,.youthBtn.active{
+  background:linear-gradient(180deg,#fefeff,#eef7ff);
+  border-color:var(--accent);
+}
+.callout{
+  background:linear-gradient(90deg,#fff9ec,#f1f7ff);
+  border-left:6px solid var(--accent3);
+}
+.feedback{
+  background:linear-gradient(180deg,#ffffff,#f8fbff);
+}
+.hero .bigicon{
+  animation:heroFloat 3.2s ease-in-out infinite;
+}
+.soundToggle{
+  background:linear-gradient(180deg,#fff,#f6fbff);
+}
+.progress span{
+  background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));
+}
+.animStage{
+  background:
+    radial-gradient(circle at 15% 18%, rgba(255,217,61,.28), transparent 24%),
+    radial-gradient(circle at 85% 12%, rgba(0,194,255,.18), transparent 24%),
+    linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);
+  border:1px solid #d8e8ff;
+  box-shadow:0 10px 26px rgba(88,113,186,.12);
+}
+.visualBanner{
+  position:relative;
+  overflow:hidden;
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:16px;
+  align-items:center;
+  margin:0 0 18px;
+  padding:18px;
+  border-radius:24px;
+  color:#13233a;
+  border:1px solid rgba(255,255,255,.75);
+  box-shadow:0 16px 34px rgba(88,113,186,.15);
+}
+.visualBanner::before,
+.visualBanner::after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  filter:blur(4px);
+  opacity:.55;
+}
+.visualBanner::before{
+  width:180px;height:180px;right:-40px;top:-55px;background:rgba(255,255,255,.35);
+}
+.visualBanner::after{
+  width:120px;height:120px;left:-30px;bottom:-35px;background:rgba(255,255,255,.24);
+}
+.visualBanner.theme-home{background:linear-gradient(135deg,#ffe99f,#ffd1dc 45%,#c8f1ff)}
+.visualBanner.theme-id{background:linear-gradient(135deg,#d7f7ff,#f0ebff,#fff3b0)}
+.visualBanner.theme-intro{background:linear-gradient(135deg,#fff2cf,#ffd9ec,#d9f0ff)}
+.visualBanner.theme-cave1{background:linear-gradient(135deg,#ffe0cc,#ffd27f,#fff0d4)}
+.visualBanner.theme-cave2{background:linear-gradient(135deg,#ffd8d8,#ffe5ba,#efe0ff)}
+.visualBanner.theme-cave3{background:linear-gradient(135deg,#e0ffe9,#daf5ff,#f8e8ff)}
+.visualBanner.theme-culture{background:linear-gradient(135deg,#e6f9ff,#fff1d6,#f2e9ff)}
+.visualBanner.theme-nego{background:linear-gradient(135deg,#dff7ff,#dfffe7,#fff4d8)}
+.visualBanner.theme-boss{background:linear-gradient(135deg,#ffe8d6,#ffe6fa,#dff0ff)}
+.visualBanner.theme-youth{background:linear-gradient(135deg,#ffe9ef,#fff6bf,#dff6d8)}
+.visualBanner.theme-action{background:linear-gradient(135deg,#dff7ff,#efe2ff,#fff3d6)}
+.visualBanner.theme-submit{background:linear-gradient(135deg,#e4ffe4,#dff6ff,#fff3cf)}
+.visualBanner.theme-teacher{background:linear-gradient(135deg,#e7f0ff,#ece5ff,#fff3d1)}
+.visualText h3{margin:0 0 8px;font-size:clamp(24px,4vw,38px)}
+.visualText p{margin:0;font-size:15px;line-height:1.7;color:#324357}
+.visualArt{display:flex;align-items:center;justify-content:center;gap:14px;min-height:110px;flex-wrap:wrap}
+.floatIcon{
+  font-size:clamp(42px,7vw,68px);
+  filter:drop-shadow(0 10px 14px rgba(0,0,0,.12));
+  animation:floatIcon 3s ease-in-out infinite;
+}
+.floatIcon:nth-child(2){animation-delay:.35s}
+.floatIcon:nth-child(3){animation-delay:.7s}
+.iconPill{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 12px;
+  margin:8px 8px 0 0;
+  border-radius:999px;
+  background:rgba(255,255,255,.7);
+  backdrop-filter:blur(6px);
+  font-weight:800;
+  font-size:13px;
+}
+.sparkLine{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+.miniSticker{
+  position:fixed;
+  right:16px;
+  bottom:16px;
+  z-index:20;
+  background:linear-gradient(135deg,#fff,#f6fbff);
+  border:1px solid #dce8f8;
+  border-radius:16px;
+  padding:8px 12px;
+  box-shadow:0 8px 24px rgba(96,116,183,.16);
+  font-size:13px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.miniSticker b{font-size:14px}
+.stagePulse{
+  animation:stagePulse 1.8s ease-in-out infinite;
+}
+@keyframes floatIcon{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  50%{transform:translateY(-8px) rotate(2deg)}
+}
+@keyframes heroFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
+}
+@keyframes stagePulse{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.04)}
+}
+@media(max-width:800px){
+  .visualBanner{grid-template-columns:1fr}
+  .miniSticker{right:10px;left:10px;bottom:10px;justify-content:center}
+}
+
 @media(max-width:800px){.settingsGrid{grid-template-columns:1fr}}
 
 @media(max-width:800px){.dashboardTop{grid-template-columns:repeat(2,1fr)}.detailGrid{grid-template-columns:1fr}}
@@ -147,7 +347,7 @@ html:not(.lang-en) [data-lang="en"]{display:none!important}
   <div class="topin">
     <div>
       <div class="brand">🐇 狡兔三窟：全球策略家</div>
-      <div class="sub">顯示與操作設定版 V3.6｜Google 試算表 × Apps Script</div>
+      <div class="sub">亮彩豐富版 V3.7｜Google 試算表 × Apps Script</div>
       <div class="progressrow"><div class="progress"><span id="progressBar"></span></div><div class="badge" id="stageBadge">首頁</div></div>
       <div class="soundToggleWrap">
         <button type="button" class="soundToggle on" id="soundToggleBtn">🔊 音效開啟</button>
@@ -451,6 +651,63 @@ if(window.matchMedia){
   if(mq.addEventListener) mq.addEventListener('change',()=>{if(state.settings.theme==='system')applyAllSettings()});
 }
 
+
+const STAGE_VISUALS = {
+  student: {
+    0:{theme:'home', zhTitle:'策略冒險開始', enTitle:'Start the Strategy Adventure', zhDesc:'從《戰國策》出發，結合動畫、圖示、任務與全球議題，展開一場更明亮、更有趣的學習冒險。', enDesc:'Start a vivid learning adventure with visuals, icons, missions, and global thinking.', icons:['🐇','🌍','✨'], pills:['古文策略','全球視野','互動任務']},
+    1:{theme:'id', zhTitle:'建立你的學習身分', enTitle:'Set Up Your Profile', zhDesc:'先輸入班級、座號與姓名，準備進入個人的策略任務與學習歷程。', enDesc:'Enter your class, seat number, and name before the mission begins.', icons:['🧑‍🎓','📝','📱'], pills:['班級','座號','姓名']},
+    2:{theme:'intro', zhTitle:'故事開場：你怎麼看馮諼？', enTitle:'Opening Question', zhDesc:'從第一印象切入，開啟判斷、推理與反思的學習旅程。', enDesc:'Start with your first impression and begin the journey of judgment and reflection.', icons:['🧐','📜','❓'], pills:['第一印象','推理','反思']},
+    3:{theme:'cave1', zhTitle:'第一窟｜市義於薛', enTitle:'Cave 1', zhDesc:'在財富與民心之間做選擇，體驗焚券市義的策略張力。', enDesc:'Choose between wealth and public support.', icons:['🔥','📜','❤️'], pills:['財富','民心','抉擇']},
+    4:{theme:'cave2', zhTitle:'局勢逆轉！', enTitle:'Crisis Strikes', zhDesc:'突發事件讓前面的選擇開始發酵，策略價值在危機中顯現。', enDesc:'Your earlier choices now reveal their consequences in crisis.', icons:['🚨','👑','⚡'], pills:['危機','後果','轉折']},
+    5:{theme:'cave2', zhTitle:'第二窟｜遊梁造勢', enTitle:'Cave 2', zhDesc:'辨識關鍵人物與利益關係，理解馮諼真正的布局。', enDesc:'Identify the key target behind the political strategy.', icons:['👑','🏛️','🧠'], pills:['造勢','判讀','人物']},
+    6:{theme:'cave3', zhTitle:'第三窟｜立宗廟於薛', enTitle:'Cave 3', zhDesc:'用 100 枚策略幣配置未來，打造制度化的長期根基。', enDesc:'Allocate 100 strategy coins to build long-term foundations.', icons:['🏛️','🐇','🌟'], pills:['長期布局','制度','根基']},
+    7:{theme:'culture', zhTitle:'跨文化理解', enTitle:'Cross-cultural Understanding', zhDesc:'學會在差異之間理解他人，再進一步進行判斷。', enDesc:'Understand differences before making judgments.', icons:['🤝','🌐','💬'], pills:['文化差異','理解','溝通']},
+    8:{theme:'nego', zhTitle:'全球談判模擬', enTitle:'Global Negotiation', zhDesc:'從不同國家立場出發，尋找共同利益與合作方案。', enDesc:'Find common ground through global negotiation.', icons:['🌍','🕊️','🤝'], pills:['國際談判','共同利益','合作']},
+    9:{theme:'boss', zhTitle:'Boss 關｜人類的三窟', enTitle:'Boss Mission', zhDesc:'把視角拉到全球，思考全人類最重要的三項安全網。', enDesc:'Think globally about the three key safeguards for humanity.', icons:['🌍','🧠','🛡️'], pills:['全球議題','選擇','理由']},
+    10:{theme:'youth', zhTitle:'生命教育｜我的青春三窟', enTitle:'My Three Youth Caves', zhDesc:'從世界回到自己，找出支持你重新開始的生命資源。', enDesc:'Return to yourself and identify the resources that support you.', icons:['❤️','🌱','💪'], pills:['家人朋友','能力資源','重新開始']},
+    11:{theme:'action', zhTitle:'我的第四窟', enTitle:'My Fourth Cave', zhDesc:'把策略與思考轉化成未來一個月的真實行動。', enDesc:'Turn reflection into an action for the coming month.', icons:['🚀','🧭','✨'], pills:['行動承諾','實踐','成長']},
+    12:{theme:'submit', zhTitle:'雲端提交', enTitle:'Cloud Submission', zhDesc:'將你的學習歷程寫入 Google 試算表，形成全班的學習數據。', enDesc:'Submit your record to Google Sheets.', icons:['☁️','✅','📊'], pills:['提交紀錄','學習歷程','班級數據']}
+  },
+  teacher: {
+    0:{theme:'teacher', zhTitle:'教師即時儀表板', enTitle:'Teacher Live Dashboard', zhDesc:'即時掌握班級提交狀況、統計分布與學生作答細節。', enDesc:'Monitor class submissions and analytics in real time.', icons:['🧑‍🏫','📊','⚡'], pills:['即時更新','班級統計','查看明細']}
+  }
+};
+
+function decorateScreen(){
+  const group = state.mode==='teacher' ? STAGE_VISUALS.teacher : STAGE_VISUALS.student;
+  const cfg = group[state.stage];
+  const old = document.getElementById('stageVisualBanner');
+  if(old) old.remove();
+  if(!cfg || !screen) return;
+
+  const banner = document.createElement('div');
+  banner.className = `visualBanner theme-${cfg.theme}`;
+  banner.id = 'stageVisualBanner';
+  banner.innerHTML = `
+    <div class="visualText">
+      <h3><span data-lang="zh">${cfg.zhTitle}</span><span data-lang="en">${cfg.enTitle}</span></h3>
+      <p><span data-lang="zh">${cfg.zhDesc}</span><span data-lang="en">${cfg.enDesc}</span></p>
+      <div class="sparkLine">
+        ${cfg.pills.map(p=>`<span class="iconPill">✨ ${p}</span>`).join('')}
+      </div>
+    </div>
+    <div class="visualArt stagePulse">
+      ${cfg.icons.map(x=>`<span class="floatIcon">${x}</span>`).join('')}
+    </div>
+  `;
+  screen.prepend(banner);
+  applyLanguageVisibility();
+
+  const oldSticker = document.getElementById('miniSticker');
+  if(oldSticker) oldSticker.remove();
+  const sticker = document.createElement('div');
+  sticker.id = 'miniSticker';
+  sticker.className = 'miniSticker';
+  sticker.innerHTML = `<span>🌈</span><b><span data-lang="zh">亮彩學習模式</span><span data-lang="en">Colorful Learning Mode</span></b><span>✨</span>`;
+  document.body.appendChild(sticker);
+  applyLanguageVisibility();
+}
+
 function home(){
   screen.innerHTML=`
   <div class="hero">
@@ -462,7 +719,7 @@ function home(){
         <button class="btn primary" id="studentBtn">學生開始遊戲</button>
         <button class="btn secondary teacherLock" id="teacherBtn">🔐 教師登入</button>
       </div>
-      <div class="callout"><b>互動音效：</b>一般選擇、答題確認、三段大型動畫、Boss 關、青春三窟與雲端提交都有不同提示音；V3.6 已提高整體音量並加強事件音效層次。右上角可隨時關閉音效。<br><br><b>教師控管：</b>教師密碼不放在 HTML。Apps Script 驗證成功後才發出短效 Session Token，未通過驗證者不能讀取學生資料。</div>
+      <div class="callout"><b>互動音效：</b>一般選擇、答題確認、三段大型動畫、Boss 關、青春三窟與雲端提交都有不同提示音；V3.7 已提高整體音量並加強事件音效層次。右上角可隨時關閉音效。<br><br><b>教師控管：</b>教師密碼不放在 HTML。Apps Script 驗證成功後才發出短效 Session Token，未通過驗證者不能讀取學生資料。</div>
     </div>
     <div class="bigicon">🐇📱🔐</div>
   </div>`;
@@ -978,6 +1235,7 @@ function render(){
   applyAllSettings();
   sync();
   [home,identity,intro,cave1,crisis,cave2,cave3,culture,negotiation,boss,youthCaves,action,submitPage][state.stage]();
+  decorateScreen();
 }
 render();
 })();
