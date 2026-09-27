@@ -102,41 +102,40 @@ button,input,textarea,select{font:inherit}button{cursor:pointer}
 .soundHint{font-size:12px;color:var(--muted)}
 
 
-/* ===== V3.6 顯示與操作設定 ===== */
-:root{--device-max:1180px;--font-zoom:1;--surface:#ffffff;--surface2:#fbfcfe;--overlay:rgba(15,23,42,.58)}
-html{color-scheme:light dark}
-body{zoom:var(--font-zoom)}
-body.device-mobile{--device-max:430px}
-body.device-tablet{--device-max:820px}
-body.device-desktop{--device-max:1180px}
-body.device-mobile .wrap,body.device-mobile .topin,body.device-tablet .wrap,body.device-tablet .topin,body.device-desktop .wrap,body.device-desktop .topin{max-width:var(--device-max)}
-body.layout-portrait .wrap,body.layout-portrait .topin{max-width:min(760px,var(--device-max))}
-body.layout-portrait .hero,body.layout-portrait .grid2,body.layout-portrait .summaryGrid,body.layout-portrait .topin{grid-template-columns:1fr}
-body.layout-portrait .cardgrid,body.layout-portrait .issueGrid,body.layout-portrait .youthGrid,body.layout-portrait .youthResult{grid-template-columns:1fr}
-body.layout-landscape .wrap,body.layout-landscape .topin{max-width:min(1280px,var(--device-max))}
-body.layout-landscape .hero{grid-template-columns:1.2fr .8fr}
-body.font-small{--font-zoom:.90}
-body.font-standard{--font-zoom:1}
-body.font-large{--font-zoom:1.14}
-html[data-theme="dark"]{
-  --bg:#101521;--card:#171e2c;--ink:#f3f5f8;--muted:#aeb8c7;--line:#344052;--accent:#8fa1ff;--accent2:#4ed0b5;--good:#5ddb9d;--bad:#ff8181;--soft:#202a43;--surface:#171e2c;--surface2:#111827;--overlay:rgba(0,0,0,.72)
-}
-html[data-theme="dark"] body{background:linear-gradient(180deg,#0d121c,#111827);color:var(--ink)}
-html[data-theme="dark"] .top{background:rgba(13,18,28,.94)}
-html[data-theme="dark"] .panel,html[data-theme="dark"] .res,html[data-theme="dark"] .card,html[data-theme="dark"] .issue,html[data-theme="dark"] input,html[data-theme="dark"] textarea,html[data-theme="dark"] select,html[data-theme="dark"] .soundToggle,html[data-theme="dark"] .box,html[data-theme="dark"] .metric,html[data-theme="dark"] .detailItem{background:var(--surface);color:var(--ink)}
-html[data-theme="dark"] .box,html[data-theme="dark"] .metric,html[data-theme="dark"] .feedback,html[data-theme="dark"] .detailItem{background:var(--surface2)}
-html[data-theme="dark"] .lead,html[data-theme="dark"] .card span,html[data-theme="dark"] .small,html[data-theme="dark"] .animSub,html[data-theme="dark"] .soundHint{color:var(--muted)}
-html[data-theme="dark"] .callout{background:#202b46}
-html[data-theme="dark"] .table th{background:#202938}
-html[data-theme="dark"] .table td{background:#161d29}
-.settingsFab{position:fixed;right:18px;bottom:18px;z-index:80;width:58px;height:58px;border:0;border-radius:50%;background:var(--accent);color:#fff;font-size:26px;box-shadow:0 12px 28px rgba(0,0,0,.24);display:flex;align-items:center;justify-content:center}
-.settingsFab:hover{transform:translateY(-2px)}
-.settingsOverlay{position:fixed;inset:0;background:var(--overlay);z-index:100;display:flex;align-items:center;justify-content:center;padding:18px}
-.settingsPanel{width:min(760px,100%);max-height:88vh;overflow:auto;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:0 28px 80px rgba(0,0,0,.35)}
-.settingsHead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.settingsHead h2{margin:0;font-size:28px}.settingsClose{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:9px 12px;font-weight:800}
-.settingRow{display:grid;grid-template-columns:180px 1fr;gap:14px;align-items:center;padding:14px 0;border-top:1px solid var(--line)}.settingRow:first-of-type{border-top:0}.settingLabel{font-weight:900}.settingDesc{font-size:12px;color:var(--muted);margin-top:3px}.seg{display:flex;flex-wrap:wrap;gap:7px}.seg button{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:9px 13px;font-weight:800;min-height:40px}.seg button.active{background:var(--accent);border-color:var(--accent);color:#fff}.settingsFoot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
-.deviceBadge{position:fixed;left:14px;bottom:14px;z-index:50;background:rgba(23,32,51,.86);color:#fff;border-radius:999px;padding:6px 10px;font-size:11px;pointer-events:none}
-@media(max-width:650px){.settingRow{grid-template-columns:1fr}.settingsPanel{padding:17px}.settingsHead h2{font-size:23px}.settingsFab{right:12px;bottom:12px}}
+.settingsBackdrop{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:200;display:flex;align-items:center;justify-content:center;padding:18px}
+.settingsPanel{width:min(760px,100%);max-height:88vh;overflow:auto;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 24px 70px rgba(0,0,0,.28)}
+.settingsHead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.settingsHead h2{margin:0;font-size:26px}
+.settingsGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.settingCard{border:1px solid var(--line);border-radius:16px;padding:14px;background:var(--card)}
+.settingCard h3{margin:0 0 8px;font-size:16px}
+.settingRow{display:flex;flex-wrap:wrap;gap:8px}
+.segBtn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:8px 12px;font-weight:800}
+.segBtn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.settingsFoot{display:flex;justify-content:flex-end;gap:10px;margin-top:16px}
+html.theme-dark{--bg:#111827;--card:#182231;--ink:#edf2f7;--muted:#a9b4c3;--line:#334155;--soft:#1f2b3d;--shadow:0 12px 30px rgba(0,0,0,.28)}
+html.theme-dark body{background:linear-gradient(180deg,#0f172a,#111827)}
+html.theme-dark .top{background:rgba(15,23,42,.95)}
+html.theme-dark input,html.theme-dark textarea,html.theme-dark select{background:#111827;color:#edf2f7;border-color:#40506a}
+html.theme-dark .card,html.theme-dark .issue,html.theme-dark .youthBtn,html.theme-dark .soundToggle,html.theme-dark .segBtn{background:#182231;color:#edf2f7}
+html.theme-dark .box,html.theme-dark .feedback,html.theme-dark .metric,html.theme-dark .detailItem{background:#152033}
+html.theme-dark .callout{background:#17233a}
+html.theme-light{--bg:#f6f8fb;--card:#fff;--ink:#172033;--muted:#667085;--line:#d7e0ea;--soft:#f3f6ff}
+html.font-small body{font-size:14px}
+html.font-normal body{font-size:16px}
+html.font-large body{font-size:18px}
+html.font-small .lead{font-size:15px}
+html.font-large .lead{font-size:19px}
+html.device-phone .wrap,html.device-phone .topin{max-width:430px}
+html.device-tablet .wrap,html.device-tablet .topin{max-width:820px}
+html.device-desktop .wrap,html.device-desktop .topin{max-width:1180px}
+html.layout-portrait .hero,html.layout-portrait .grid2,html.layout-portrait .summaryGrid{grid-template-columns:1fr}
+html.layout-landscape .hero{grid-template-columns:1.15fr .85fr}
+html.layout-landscape .grid2{grid-template-columns:1fr 1fr}
+html.layout-landscape .summaryGrid{grid-template-columns:repeat(2,1fr)}
+html.lang-en [data-lang="zh"]{display:none!important}
+html:not(.lang-en) [data-lang="en"]{display:none!important}
+@media(max-width:800px){.settingsGrid{grid-template-columns:1fr}}
 
 @media(max-width:800px){.dashboardTop{grid-template-columns:repeat(2,1fr)}.detailGrid{grid-template-columns:1fr}}
 
@@ -152,7 +151,7 @@ html[data-theme="dark"] .table td{background:#161d29}
       <div class="progressrow"><div class="progress"><span id="progressBar"></span></div><div class="badge" id="stageBadge">首頁</div></div>
       <div class="soundToggleWrap">
         <button type="button" class="soundToggle on" id="soundToggleBtn">🔊 音效開啟</button>
-        <span class="soundHint">可隨時切換</span>
+        <button type="button" class="soundToggle" id="settingsBtn">⚙️ 顯示與操作設定</button>
       </div>
     </div>
     <div class="resources">
@@ -168,22 +167,6 @@ html[data-theme="dark"] .table td{background:#161d29}
 <div class="wrap">
   <section id="screen" class="panel"></section>
   <footer>學生送出資料後寫入 Google 試算表「記錄」工作表；教師端需密碼登入，並可即時讀取全班結果。</footer>
-</div>
-
-<button type="button" class="settingsFab" id="settingsFab" aria-label="顯示與操作設定" title="顯示與操作設定">⚙️</button>
-<div class="deviceBadge" id="deviceBadge">自動・自動</div>
-<div class="settingsOverlay hidden" id="settingsOverlay" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
-  <div class="settingsPanel">
-    <div class="settingsHead"><h2 id="settingsTitle">⚙️ 顯示與操作設定</h2><button type="button" class="settingsClose" id="settingsClose">✕ 關閉</button></div>
-    <div class="settingRow"><div><div class="settingLabel">① 全螢幕</div><div class="settingDesc">切換瀏覽器全螢幕顯示</div></div><div class="seg" data-setting="fullscreen"><button data-value="on">開啟</button><button data-value="off">關閉</button></div></div>
-    <div class="settingRow"><div><div class="settingLabel">② 音效</div><div class="settingDesc">互動音效與事件音效</div></div><div class="seg" data-setting="sound"><button data-value="on">開啟</button><button data-value="off">關閉</button></div></div>
-    <div class="settingRow"><div><div class="settingLabel">③ 裝置</div><div class="settingDesc">模擬不同裝置內容寬度</div></div><div class="seg" data-setting="device"><button data-value="auto">自動</button><button data-value="mobile">手機</button><button data-value="tablet">平板</button><button data-value="desktop">電腦</button></div></div>
-    <div class="settingRow"><div><div class="settingLabel">④ 版面</div><div class="settingDesc">控制直式或橫式資訊排列</div></div><div class="seg" data-setting="layout"><button data-value="auto">自動</button><button data-value="portrait">直式</button><button data-value="landscape">橫式</button></div></div>
-    <div class="settingRow"><div><div class="settingLabel">⑤ 語言</div><div class="settingDesc">切換學生端與教師端主要介面</div></div><div class="seg" data-setting="language"><button data-value="zh-TW">繁體中文</button><button data-value="en">English</button></div></div>
-    <div class="settingRow"><div><div class="settingLabel">⑥ 字體</div><div class="settingDesc">調整整體顯示比例</div></div><div class="seg" data-setting="font"><button data-value="small">縮小</button><button data-value="standard">標準</button><button data-value="large">放大</button></div></div>
-    <div class="settingRow"><div><div class="settingLabel">⑦ 色系</div><div class="settingDesc">可跟隨作業系統深淺色設定</div></div><div class="seg" data-setting="theme"><button data-value="system">跟隨系統</button><button data-value="light">亮色</button><button data-value="dark">暗色</button></div></div>
-    <div class="settingsFoot"><button type="button" class="btn ghost" id="settingsReset">恢復預設</button><span class="small" id="settingsStatus">設定會自動儲存在此瀏覽器。</span></div>
-  </div>
 </div>
 
 <script>
@@ -205,7 +188,13 @@ const state = {
   scores:{long:0,empathy:0,culture:0,negotiate:0,global:0,action:0},
   submitted:false,
   sound:true,
-  settings:{device:'auto',layout:'auto',language:'zh-TW',font:'standard',theme:'system'}
+  settings:{
+    device:'auto',
+    layout:'auto',
+    lang:'zh',
+    font:'normal',
+    theme:'system'
+  }
 };
 
 const teacherState = {
@@ -221,7 +210,7 @@ function clamp(n){return Math.max(0,Math.min(100,n))}
 function sync(){
   ['money','people','rep','rel','root'].forEach(k=>document.getElementById(k).textContent=Math.round(state[k]));
   document.getElementById('progressBar').style.width=`${Math.min(100,state.stage/(stages.length-1)*100)}%`;
-  document.getElementById('stageBadge').textContent=translateText(stages[state.stage]||'完成');
+  document.getElementById('stageBadge').textContent=stages[state.stage]||'完成';
   syncSoundButton();
 }
 function delta(d){Object.entries(d).forEach(([k,v])=>state[k]=clamp(state[k]+v));sync()}
@@ -340,7 +329,8 @@ function syncSoundButton(){
   const b=document.getElementById('soundToggleBtn');
   if(!b) return;
   b.classList.toggle('on',state.sound);
-  b.textContent=state.settings&&state.settings.language==='en'?(state.sound?'🔊 Sound on':'🔇 Sound off'):(state.sound?'🔊 音效開啟':'🔇 音效關閉');
+  const en=state.settings && state.settings.lang==='en';
+  b.textContent=state.sound?(en?'🔊 Sound On':'🔊 音效開啟'):(en?'🔇 Sound Off':'🔇 音效關閉');
 }
 document.addEventListener('click',e=>{
   const b=e.target.closest && e.target.closest('#soundToggleBtn');
@@ -350,121 +340,116 @@ document.addEventListener('click',e=>{
   if(state.sound) sfx('confirm');
 });
 
-const SETTINGS_KEY='rabbit_strategy_settings_v36';
-const DEFAULT_SETTINGS={device:'auto',layout:'auto',language:'zh-TW',font:'standard',theme:'system',sound:true};
-const systemDark=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)'):null;
 
-function loadSettings(){
-  try{
-    const saved=JSON.parse(localStorage.getItem(SETTINGS_KEY)||'{}');
-    const merged=Object.assign({},DEFAULT_SETTINGS,saved);
-    state.settings.device=merged.device;
-    state.settings.layout=merged.layout;
-    state.settings.language=merged.language;
-    state.settings.font=merged.font;
-    state.settings.theme=merged.theme;
-    state.sound=merged.sound!==false;
-  }catch(e){}
+
+function openSettings(){
+  closeSettings();
+  const back=document.createElement('div');
+  back.className='settingsBackdrop';
+  back.id='settingsBackdrop';
+  back.innerHTML=`
+    <div class="settingsPanel" role="dialog" aria-modal="true" aria-label="顯示與操作設定">
+      <div class="settingsHead">
+        <h2>⚙️ <span data-lang="zh">顯示與操作設定</span><span data-lang="en">Display & Controls</span></h2>
+        <button type="button" class="btn ghost" id="closeSettingsBtn">✕</button>
+      </div>
+      <div class="settingsGrid">
+        ${settingBlock('fullscreen','(1) 全螢幕','(1) Fullscreen',[['on','開啟','On'],['off','關閉','Off']],document.fullscreenElement?'on':'off')}
+        ${settingBlock('sound','(2) 音效','(2) Sound',[['on','開啟','On'],['off','關閉','Off']],state.sound?'on':'off')}
+        ${settingBlock('device','(3) 裝置','(3) Device',[['auto','自動','Auto'],['phone','手機','Phone'],['tablet','平板','Tablet'],['desktop','電腦','Desktop']],state.settings.device)}
+        ${settingBlock('layout','(4) 版面','(4) Layout',[['auto','自動','Auto'],['portrait','直式','Portrait'],['landscape','橫式','Landscape']],state.settings.layout)}
+        ${settingBlock('lang','(5) 語言','(5) Language',[['zh','繁體中文','Traditional Chinese'],['en','英文','English']],state.settings.lang)}
+        ${settingBlock('font','(6) 字體','(6) Font Size',[['small','縮小','Small'],['normal','標準','Normal'],['large','放大','Large']],state.settings.font)}
+        ${settingBlock('theme','(7) 色系','(7) Theme',[['system','跟隨系統','System'],['light','亮色','Light'],['dark','暗色','Dark']],state.settings.theme)}
+      </div>
+      <div class="settingsFoot">
+        <button type="button" class="btn secondary" id="resetSettingsBtn"><span data-lang="zh">恢復預設</span><span data-lang="en">Reset</span></button>
+        <button type="button" class="btn primary" id="doneSettingsBtn"><span data-lang="zh">完成</span><span data-lang="en">Done</span></button>
+      </div>
+    </div>`;
+  document.body.appendChild(back);
+  bindSettingsControls(back);
+  applyLanguageVisibility();
 }
-function saveSettings(){
-  try{localStorage.setItem(SETTINGS_KEY,JSON.stringify(Object.assign({},state.settings,{sound:state.sound})))}catch(e){}
+function settingBlock(key,zhTitle,enTitle,options,current){
+  return `<div class="settingCard">
+    <h3><span data-lang="zh">${zhTitle}</span><span data-lang="en">${enTitle}</span></h3>
+    <div class="settingRow">${options.map(([v,zh,en])=>`<button type="button" class="segBtn ${v===current?'active':''}" data-setting="${key}" data-value="${v}"><span data-lang="zh">${zh}</span><span data-lang="en">${en}</span></button>`).join('')}</div>
+  </div>`;
 }
-function applyTheme(){
-  let theme=state.settings.theme;
-  if(theme==='system') theme=(systemDark&&systemDark.matches)?'dark':'light';
-  document.documentElement.dataset.theme=theme;
+function bindSettingsControls(root){
+  root.querySelector('#closeSettingsBtn').onclick=closeSettings;
+  root.querySelector('#doneSettingsBtn').onclick=closeSettings;
+  root.querySelector('#resetSettingsBtn').onclick=()=>{
+    state.sound=true;
+    state.settings={device:'auto',layout:'auto',lang:'zh',font:'normal',theme:'system'};
+    applyAllSettings();
+    closeSettings();
+    openSettings();
+  };
+  root.querySelectorAll('[data-setting]').forEach(btn=>btn.onclick=async()=>{
+    const key=btn.dataset.setting,val=btn.dataset.value;
+    if(key==='fullscreen'){
+      try{
+        if(val==='on' && !document.fullscreenElement) await document.documentElement.requestFullscreen();
+        if(val==='off' && document.fullscreenElement) await document.exitFullscreen();
+      }catch(e){}
+    }else if(key==='sound'){
+      state.sound=val==='on';
+      if(state.sound) sfx('confirm');
+    }else{
+      state.settings[key]=val;
+    }
+    applyAllSettings();
+    root.querySelectorAll(`[data-setting="${key}"]`).forEach(b=>b.classList.toggle('active',b.dataset.value===val));
+  });
+  root.addEventListener('click',e=>{if(e.target===root)closeSettings()});
 }
-function applyDisplaySettings(){
-  document.body.classList.remove('device-mobile','device-tablet','device-desktop','layout-portrait','layout-landscape','font-small','font-standard','font-large');
-  if(state.settings.device!=='auto') document.body.classList.add('device-'+state.settings.device);
-  if(state.settings.layout!=='auto') document.body.classList.add('layout-'+state.settings.layout);
-  document.body.classList.add('font-'+state.settings.font);
-  document.documentElement.lang=state.settings.language==='en'?'en':'zh-Hant';
-  applyTheme();
-  updateDeviceBadge();
+function closeSettings(){const el=document.getElementById('settingsBackdrop');if(el)el.remove()}
+function applyAllSettings(){
+  const root=document.documentElement;
+  ['device-phone','device-tablet','device-desktop','layout-portrait','layout-landscape','font-small','font-normal','font-large','theme-dark','theme-light','lang-en'].forEach(c=>root.classList.remove(c));
+  if(state.settings.device!=='auto') root.classList.add('device-'+state.settings.device);
+  if(state.settings.layout!=='auto') root.classList.add('layout-'+state.settings.layout);
+  root.classList.add('font-'+state.settings.font);
+  if(state.settings.lang==='en') root.classList.add('lang-en');
+  const prefersDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const theme=state.settings.theme==='system'?(prefersDark?'dark':'light'):state.settings.theme;
+  root.classList.add('theme-'+theme);
   syncSoundButton();
-  updateSettingsUI();
+  applyLanguageVisibility();
 }
-function updateDeviceBadge(){
-  const el=document.getElementById('deviceBadge'); if(!el)return;
-  const z={auto:'自動',mobile:'手機',tablet:'平板',desktop:'電腦'};
-  const e={auto:'Auto',mobile:'Phone',tablet:'Tablet',desktop:'Desktop'};
-  const lz={auto:'自動',portrait:'直式',landscape:'橫式'};
-  const le={auto:'Auto',portrait:'Portrait',landscape:'Landscape'};
-  const en=state.settings.language==='en';
-  el.textContent=(en?e:z)[state.settings.device]+'・'+(en?le:lz)[state.settings.layout];
-}
-async function setFullscreen(on){
-  try{
-    if(on && !document.fullscreenElement){await document.documentElement.requestFullscreen();}
-    if(!on && document.fullscreenElement){await document.exitFullscreen();}
-  }catch(e){setSettingsStatus(state.settings.language==='en'?'Fullscreen is not available in this browser.':'此瀏覽器目前無法切換全螢幕。',true)}
-  updateSettingsUI();
-}
-function setSettingsStatus(msg,isError=false){const el=document.getElementById('settingsStatus');if(el){el.textContent=msg;el.style.color=isError?'var(--bad)':''}}
-function openSettings(){document.getElementById('settingsOverlay')?.classList.remove('hidden');updateSettingsUI()}
-function closeSettings(){document.getElementById('settingsOverlay')?.classList.add('hidden')}
-function updateSettingsUI(){
-  document.querySelectorAll('.seg[data-setting]').forEach(seg=>{
-    const key=seg.dataset.setting;
-    let current=key==='sound'?(state.sound?'on':'off'):key==='fullscreen'?(document.fullscreenElement?'on':'off'):state.settings[key];
-    seg.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.value===current));
+function applyLanguageVisibility(){
+  document.querySelectorAll('[data-lang]').forEach(el=>{
+    const isEn=state.settings.lang==='en';
+    el.style.display=((el.dataset.lang==='en')===isEn)?'':'none';
   });
-  applySettingsLanguage();
+  translateCoreUI();
 }
-function handleSetting(key,value){
-  if(key==='fullscreen'){setFullscreen(value==='on');return}
-  if(key==='sound'){state.sound=value==='on';if(state.sound)sfx('confirm')}
-  else state.settings[key]=value;
-  saveSettings();applyDisplaySettings();
-  if(key==='language') render();
-  setSettingsStatus(state.settings.language==='en'?'Saved on this device.':'設定已儲存在此裝置。');
+function translateCoreUI(){
+  const en=state.settings.lang==='en';
+  const map={
+    studentBtn:en?'Start as Student':'學生開始遊戲',
+    teacherBtn:en?'🔐 Teacher Login':'🔐 教師登入',
+    settingsBtn:en?'⚙️ Display & Controls':'⚙️ 顯示與操作設定'
+  };
+  Object.entries(map).forEach(([id,text])=>{const el=document.getElementById(id);if(el)el.textContent=text});
+  syncSoundButton();
 }
-
-const SETTINGS_EN={
-'⚙️ 顯示與操作設定':'⚙️ Display & Control Settings','✕ 關閉':'✕ Close','① 全螢幕':'① Full screen','切換瀏覽器全螢幕顯示':'Toggle browser full-screen mode','② 音效':'② Sound','互動音效與事件音效':'Interaction and event sound effects','③ 裝置':'③ Device','模擬不同裝置內容寬度':'Simulate different device widths','④ 版面':'④ Layout','控制直式或橫式資訊排列':'Control portrait or landscape layout','⑤ 語言':'⑤ Language','切換學生端與教師端主要介面':'Switch the main student and teacher interface','⑥ 字體':'⑥ Font size','調整整體顯示比例':'Adjust overall display scale','⑦ 色系':'⑦ Color theme','可跟隨作業系統深淺色設定':'Can follow your system light/dark setting','恢復預設':'Reset','設定會自動儲存在此瀏覽器。':'Settings are saved automatically in this browser.','開啟':'On','關閉':'Off','自動':'Auto','手機':'Phone','平板':'Tablet','電腦':'Desktop','直式':'Portrait','橫式':'Landscape','繁體中文':'繁體中文','縮小':'Smaller','標準':'Standard','放大':'Larger','跟隨系統':'System','亮色':'Light','暗色':'Dark'};
-function applySettingsLanguage(){
-  const en=state.settings.language==='en';
-  document.querySelectorAll('#settingsOverlay .settingLabel,#settingsOverlay .settingDesc,#settingsOverlay button,#settingsTitle,#settingsStatus').forEach(el=>{
-    if(!el.dataset.zh) el.dataset.zh=el.textContent.trim();
-    el.textContent=en?(SETTINGS_EN[el.dataset.zh]||el.dataset.zh):el.dataset.zh;
-  });
-  const fab=document.getElementById('settingsFab');if(fab)fab.title=en?'Display & Control Settings':'顯示與操作設定';
+document.addEventListener('click',e=>{
+  const btn=e.target.closest&&e.target.closest('#settingsBtn');
+  if(btn) openSettings();
+});
+document.addEventListener('fullscreenchange',()=>{
+  const panel=document.getElementById('settingsBackdrop');
+  if(panel){
+    panel.querySelectorAll('[data-setting="fullscreen"]').forEach(b=>b.classList.toggle('active',(document.fullscreenElement?'on':'off')===b.dataset.value));
+  }
+});
+if(window.matchMedia){
+  const mq=window.matchMedia('(prefers-color-scheme: dark)');
+  if(mq.addEventListener) mq.addEventListener('change',()=>{if(state.settings.theme==='system')applyAllSettings()});
 }
-
-const EN_TEXT={
-'首頁':'Home','學生資料':'Student info','序章':'Prologue','第一窟':'First cave','危機':'Crisis','第二窟':'Second cave','第三窟':'Third cave','跨文化':'Cross-cultural','全球談判':'Global negotiation','Boss 關':'Boss mission','青春三窟':'Youth three caves','第四窟':'Fourth cave','提交':'Submit',
-'🐇 狡兔三窟：全球策略家':'🐇 Three Caves: Global Strategist','全班同步玩，老師即時看結果。':'Play together. Teachers see results live.','學生開始遊戲':'Start student game','🔐 教師登入':'🔐 Teacher login','先確認你的身分':'Confirm your identity','班級':'Class','座號':'Seat no.','姓名':'Name','開始策略任務':'Start mission','返回':'Back','你怎麼看馮諼？':'What is your first impression of Feng Xuan?','進入第一窟':'Enter the first cave','薛地討債':'Collecting debts in Xue','進入第二窟：遊梁造勢':'Enter the second cave: Build influence in Liang','馮諼真正想影響誰？':'Who was Feng Xuan really trying to influence?','進入第三窟':'Enter the third cave','100 枚策略幣：十年布局':'100 strategy coins: Plan for ten years','確認配置':'Confirm allocation','走向世界':'Go global','直接，還是委婉？':'Direct or indirect?','進入全球談判':'Enter global negotiation','提交談判方案':'Submit negotiation plan','只能選三項，你會保留什麼？':'Choose only three. What will you protect?','完成 Boss 關':'Complete Boss mission','🐇 如果有一天你遭遇失敗，什麼能幫助你重新開始？':'🐇 If you fail one day, what can help you start again?','產生我的青春三窟':'Create my three youth caves','我的青春三窟':'My three youth caves','前往我的第四窟':'Go to my fourth cave','把思考變成行動':'Turn reflection into action','完成行動承諾':'Complete action pledge','任務完成，準備提交':'Mission complete. Ready to submit.','提交到 Google 試算表':'Submit to Google Sheets','重新開始':'Restart','教師端：直接讀取學生填答':'Teacher dashboard: Read student responses','教師登入':'Teacher login','讀取最新資料':'Refresh data','登出教師端':'Log out','回首頁':'Home','立即重新整理':'Refresh now','自動更新':'Auto refresh','班級篩選':'Class filter','學生搜尋':'Student search','學生填答明細':'Student response details','第一窟選擇':'First cave choices','第二窟判斷':'Second cave reasoning','跨文化任務':'Cross-cultural task','人類三窟':'Humanity’s three caves','尚未提交學生':'Students not submitted','全班平均資源：':'Class average resources:','查看':'View','關閉':'Close','音效開啟':'Sound on','音效關閉':'Sound off','可隨時切換':'Switch anytime',
-'🔥 債券焚燒':'🔥 Burning the bonds','🚨 孟嘗君遭齊王罷相！':'🚨 Lord Mengchang has been dismissed!','三窟已就，君姑高枕為樂矣。':'The three caves are ready. You may now rest easy.','從世界，回到自己':'From the world, back to yourself','第一窟｜':'Cave 1 | ','第二窟｜':'Cave 2 | ','第三窟｜':'Cave 3 | '
-};
-function translateText(str){
-  if(state.settings.language!=='en')return str;
-  let out=str;
-  Object.entries(EN_TEXT).sort((a,b)=>b[0].length-a[0].length).forEach(([zh,en])=>{out=out.split(zh).join(en)});
-  return out;
-}
-function applyPageLanguage(){
-  if(state.settings.language!=='en')return;
-  const walker=document.createTreeWalker(screen,NodeFilter.SHOW_TEXT);
-  const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
-  nodes.forEach(n=>{const t=n.nodeValue;if(t&&t.trim())n.nodeValue=translateText(t)});
-  screen.querySelectorAll('input[placeholder],textarea[placeholder]').forEach(el=>{el.placeholder=translateText(el.placeholder)});
-  const stage=document.getElementById('stageBadge');if(stage)stage.textContent=translateText(stage.textContent);
-  const brand=document.querySelector('.brand');if(brand)brand.textContent=translateText(brand.textContent);
-  const soundBtn=document.getElementById('soundToggleBtn');if(soundBtn)soundBtn.textContent=state.sound?'🔊 Sound on':'🔇 Sound off';
-  const hint=document.querySelector('.soundHint');if(hint)hint.textContent='Switch anytime';
-}
-
-systemDark&&systemDark.addEventListener&&systemDark.addEventListener('change',()=>{if(state.settings.theme==='system')applyTheme()});
-document.addEventListener('fullscreenchange',updateSettingsUI);
-document.getElementById('settingsFab')?.addEventListener('click',openSettings);
-document.getElementById('settingsClose')?.addEventListener('click',closeSettings);
-document.getElementById('settingsOverlay')?.addEventListener('click',e=>{if(e.target.id==='settingsOverlay')closeSettings()});
-document.querySelectorAll('.seg[data-setting] button').forEach(b=>b.addEventListener('click',()=>handleSetting(b.closest('.seg').dataset.setting,b.dataset.value)));
-document.getElementById('settingsReset')?.addEventListener('click',()=>{state.settings=Object.assign({},DEFAULT_SETTINGS);state.sound=true;saveSettings();applyDisplaySettings();render();});
-loadSettings();applyDisplaySettings();
-
-
 
 function home(){
   screen.innerHTML=`
@@ -477,7 +462,7 @@ function home(){
         <button class="btn primary" id="studentBtn">學生開始遊戲</button>
         <button class="btn secondary teacherLock" id="teacherBtn">🔐 教師登入</button>
       </div>
-      <div class="callout"><b>互動音效：</b>一般選擇、答題確認、三段大型動畫、Boss 關、青春三窟與雲端提交都有不同提示音；V3.5 已提高整體音量並加強事件音效層次。右上角可隨時關閉音效。<br><br><b>教師控管：</b>教師密碼不放在 HTML。Apps Script 驗證成功後才發出短效 Session Token，未通過驗證者不能讀取學生資料。</div>
+      <div class="callout"><b>互動音效：</b>一般選擇、答題確認、三段大型動畫、Boss 關、青春三窟與雲端提交都有不同提示音；V3.6 已提高整體音量並加強事件音效層次。右上角可隨時關閉音效。<br><br><b>教師控管：</b>教師密碼不放在 HTML。Apps Script 驗證成功後才發出短效 Session Token，未通過驗證者不能讀取學生資料。</div>
     </div>
     <div class="bigicon">🐇📱🔐</div>
   </div>`;
@@ -990,10 +975,9 @@ function detailItem(label,value){
   return `<div class="detailItem"><small>${esc(label)}</small><b>${esc(value===undefined||value===null?'':value)}</b></div>`;
 }
 function render(){
+  applyAllSettings();
   sync();
   [home,identity,intro,cave1,crisis,cave2,cave3,culture,negotiation,boss,youthCaves,action,submitPage][state.stage]();
-  applyDisplaySettings();
-  applyPageLanguage();
 }
 render();
 })();
